@@ -17,7 +17,7 @@
 
 		<div class="row">
 			<div class="col-3 col-md-2">
-				<?php the_post_thumbnail( 'thumbnail' ); ?>
+				<?php the_post_thumbnail( 'thumbnail', [ 'class' => 'img-fluid' ] ); ?>
 			</div>
 			<div class="col-9 col-md-10">
 				<?php the_excerpt(); ?>

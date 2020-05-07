@@ -111,6 +111,18 @@ add_action('wp_head', 'meta_og', 5);
 
 
 /**
+ * remove admin bar
+ */
+
+function remove_admin_bar() {
+    //if ( ! current_user_can( 'administrator' ) && ! is_admin() ) {
+        show_admin_bar( false );
+    //}
+}
+add_action( 'after_setup_theme', 'remove_admin_bar' );
+
+
+/**
  * custom settings
  */
 

@@ -27,11 +27,6 @@ include 'variables.php';
 		<script src="<?php echo $assetsPath ?>js/vendor<?php if ( ! $isDevMode ) { ?>.min<?php } ?>.js" defer></script>
 		<script src="<?php echo $assetsPath ?>js/scripts<?php if ( ! $isDevMode ) { ?>.min<?php } ?>.js" defer></script>
 
-		<?php 
-			if ( isset( $_GET[ 'wpadmin' ] ) && $_GET[ 'wpadmin' ] == '0' ) {
-				echo '<style>#wpadminbar { display: none; }</style>';
-			}
-		?>
 		<?php wp_footer(); ?>
 		
 	</body>

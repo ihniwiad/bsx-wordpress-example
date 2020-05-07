@@ -204,7 +204,7 @@ if ( ! class_exists( 'Bsx_Walker_Page' ) ) {
 
 				if ( $createClickableParentLinkChild ) {
 					// TODO: manage lang (`Übersicht`)
-					$output .= "<li class=\"" . $page->ID . "\"><a href=\"" . $pageHref . "\">Übersicht</a></li>";
+					$output .= "<li class=\"page-" . $page->ID . "\"><a href=\"" . $pageHref . "\">Übersicht</a></li>";
 				}
 			}
 		}
