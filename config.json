@@ -1,0 +1,32 @@
+{
+	"projectName": "bsx-example",
+	"relatedPackages": [
+		{
+			"path": "./../../../../bsx-basic-style",
+			"scssPath": "../../../../../../bsx-basic-style"
+		},
+		{
+			"path": ".",
+			"scssPath": ".."
+		}
+	],
+	"lang": [
+		"de",
+		"en"
+	],
+	"cssDestPath": 			"/assets/css",
+	"jsDestPath": 			"/assets/js",
+	"fontsDestFolder": 		"/assets/fonts",
+	"imgDestFolder": 		"/assets/img",
+	"exampleImgDestFolder": "/assets/example-img",
+	"phpClassesDestFile": 		"/classes/include-classes.php",
+	"phpClassesDestFolder": 	"/classes",
+	"templateSrcFolder": 			"/template-parts",
+	"templateDestFolder": 			"",
+	"templatePartsDestFolder": 		"/template-parts",
+	"jsLangObject": 			"Languages",
+	"jsLangDestFile": 			"/resources/lang/Languages.js",
+	"scssAddVariablesDestFile": 	"/resources/scss/_components-variables.scss",
+	"scssDestFile": 				"/resources/scss/style.scss",
+	"scssAtfDestFile": 				"/resources/scss/atf.scss"
+}

@@ -123,6 +123,29 @@ add_action( 'after_setup_theme', 'remove_admin_bar' );
 
 
 /**
+ * remove block library css
+ */
+
+function wpassist_remove_block_library_css(){
+    wp_dequeue_style( 'wp-block-library' );
+} 
+add_action( 'wp_enqueue_scripts', 'wpassist_remove_block_library_css' );
+
+
+
+/**
+ * remove more unwanted embes stuff
+ */
+    
+add_action( 'init', function() {
+    remove_action( 'rest_api_init', 'wp_oembed_register_route' );
+    remove_filter( 'oembed_dataparse', 'wp_filter_oembed_result', 10 );
+    remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
+    remove_action( 'wp_head', 'wp_oembed_add_host_js' );
+}, PHP_INT_MAX - 1 );
+
+
+/**
  * custom settings
  */
 
@@ -270,7 +293,7 @@ function show_your_fields_meta_box() {
 
     ?>
 
-        <input type="hidden" name="references_meta_box_nonce" value="<?php echo wp_create_nonce( basename(__FILE__) ); ?>">
+        <input type="hidden" name="references_fields_meta_box_nonce" value="<?php echo wp_create_nonce( basename(__FILE__) ); ?>">
 
         <p>
             <label for="references_fields[text]">Input Text</label>
@@ -389,3 +412,48 @@ function save_your_fields_meta( $post_id ) {
 add_action( 'save_post', 'save_your_fields_meta' );
 
 
+/**
+ * Plugin Name: Gutenberg examples 01
+ */
+/*
+function gutenberg_examples_01_register_block() {
+ 
+    // automatically load dependencies and version
+    $asset_file = include( plugin_dir_path( __FILE__ ) . 'build/index.asset.php');
+ 
+    wp_register_script(
+        'gutenberg-examples-01-esnext',
+        plugins_url( 'build/block.js', __FILE__ ),
+        $asset_file['dependencies'],
+        $asset_file['version']
+    );
+ 
+    register_block_type( 'gutenberg-examples/example-01-basic-esnext', array(
+        'editor_script' => 'gutenberg-examples-01-esnext',
+    ) );
+ 
+}
+add_action( 'init', 'gutenberg_examples_01_register_block' );
+
+
+import { registerBlockType } from '@wordpress/blocks';
+ 
+const blockStyle = {
+    backgroundColor: '#900',
+    color: '#fff',
+    padding: '20px',
+};
+ 
+registerBlockType( 'gutenberg-examples/example-01-basic-esnext', {
+    title: 'Example: Basic (esnext)',
+    icon: 'universal-access-alt',
+    category: 'layout',
+    example: {},
+    edit() {
+        return <div style={ blockStyle }>Hello World, step 1 (from the editor).</div>;
+    },
+    save() {
+        return <div style={ blockStyle }>Hello World, step 1 (from the frontend).</div>;
+    },
+} );
+*/

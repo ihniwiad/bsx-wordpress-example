@@ -35,7 +35,7 @@ body {
     -webkit-box-sizing: content-box;
     box-sizing: content-box;
     min-width: 2rem;
-    min-height: 1.5em;
+    min-height: 1.25em;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -53,9 +53,10 @@ body {
       position: absolute;
       left: 0.66667em;
       right: 0.66667em;
-      height: 1.5em;
+      height: 1.25em;
+      margin-top: 0.125em;
       background: #dee2e6;
-      border-radius: .75em; } }
+      border-radius: 0.625em; } }
 
 @media (min-width: 992px) {
   .bsx-appnav-navbar-toggler {
@@ -162,7 +163,7 @@ body {
   .bsx-appnav-navbar-nav > li > a {
     position: relative;
     min-width: 2rem;
-    min-height: 1.5em;
+    min-height: 1.25em;
     color: transparent; }
     @media (min-width: 992px) {
       .bsx-appnav-navbar-nav > li > a {
@@ -173,9 +174,10 @@ body {
       position: absolute;
       left: 0.66667em;
       right: 0.66667em;
-      height: 1.5em;
+      height: 1.25em;
+      margin-top: 0.125em;
       background: #dee2e6;
-      border-radius: 0.75em; }
+      border-radius: 0.625em; }
 
 @media (min-width: 992px) {
   .bsx-appnav-navbar-nav.bsx-main-navbar-nav {
