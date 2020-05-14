@@ -2,7 +2,7 @@
 	return;
 } ?>
 
-<div class="comments-area" id="comments" data-id="comments">
+<div class="container mt-5" id="comments" data-id="comments">
 
 	<?php if ( have_comments() ) : ?>
 		<h3 class="comments-title">
@@ -30,3 +30,4 @@ wp_list_comments( array(
 	<?php comment_form(); ?>
 
 </div>
+<!-- /.container[data-id="comments"] -->

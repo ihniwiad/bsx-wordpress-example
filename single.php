@@ -1,23 +1,20 @@
 <?php get_header(); ?>
 
-<div class="row" data-id="single">
-	<div class="col-sm-12">
+<div data-id="single">
 
-		<?php
-			if ( have_posts() ) : while ( have_posts() ) : the_post();
+	<?php
+		if ( have_posts() ) : while ( have_posts() ) : the_post();
 
-				get_template_part( 'template-parts/single-content', get_post_format() );
+			get_template_part( 'template-parts/single-content', get_post_format() );
 
-				if ( comments_open() || get_comments_number() ) :
-					comments_template();
-				endif;
+			if ( comments_open() || get_comments_number() ) :
+				comments_template();
+			endif;
 
-			endwhile; endif;
-		?>
+		endwhile; endif;
+	?>
 
-	</div>
-	<!-- /.col -->
 </div>
-<!-- /.row -->
+<!-- /[data-id="single"] -->
 
 <?php get_footer(); ?>

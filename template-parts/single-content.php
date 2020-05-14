@@ -1,4 +1,4 @@
-<div class="blog-post" data-id="single-content">
+<div class="container below-navbar-content" data-id="single-content">
 
 	<h2 class="blog-post-title"><?php the_title(); ?></h2>
 
@@ -62,11 +62,11 @@
 
 	<div class="p">
 		<?php if ( has_post_thumbnail() ) {
-			the_post_thumbnail();
+			the_post_thumbnail( 'large', [ 'class' => 'img-fluid' ] );
 		} ?>
 	</div>
 
 	<?php the_content(); ?>
 
 </div>
-<!-- /.blog-post -->
+<!-- /.container.below-navbar-content -->
