@@ -7,7 +7,7 @@ include 'variables.php';
 
 <!DOCTYPE html>
 
-<html class="no-js" <?php language_attributes(); ?><?php if ( $isDevMode ) echo ' data-dev="'.$isDevMode.'"' ?>>
+<html class="no-js" <?php language_attributes(); ?><?php if ( $isDevMode ) echo ' data-dev="'.$isDevMode.'"' ?> data-id="<?php echo get_the_ID(); ?>">
 
 	<head>
 	
