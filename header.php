@@ -21,7 +21,12 @@ include 'variables.php';
 		<?php include 'template-parts/atf-style.php'; ?>
 		
 		<!-- css -->
-		<link href="<?php echo $assetsPath ?>css/style<?php if ( ! $isDevMode ) { ?>.min<?php } ?>.css" rel="stylesheet">
+		<?php
+			// css file version
+			$cssFilePath = $rootRelatedAssetsPath . 'css/style.min.css';
+			$cssVersion = file_exists( $cssFilePath ) ? filemtime( $cssFilePath ) : 'null';
+		?>
+		<link href="<?php echo $assetsPath ?>css/style<?php if ( ! $isDevMode ) { ?>.min<?php } ?>.css?v=<?php echo $cssVersion ?>" rel="stylesheet">
 
 		<!-- favicons -->
 	    <link rel="icon" type="image/png" href="<?php echo $assetsPath ?>img/ci/icon/favicon-16x16.png" sizes="16x16">

@@ -2,9 +2,15 @@
 
 // paths
 
+$serverName = $_SERVER[ 'SERVER_NAME' ];
+$homeUrl = get_bloginfo( 'url' ) . '/';
+
 $rootPath = get_bloginfo( 'template_directory' ).'/';
 $resourcesPath = 'resources/';
-$assetsPath = $rootPath.'assets/';
+
+$relativeAssetsPath = 'assets/';
+$assetsPath = $rootPath . $relativeAssetsPath;
+$rootRelatedAssetsPath = explode( $homeUrl, $assetsPath )[ 1 ];
 
 
 // include classes file
