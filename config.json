@@ -1,5 +1,5 @@
 {
-	"projectName": "bsx-example",
+	"projectName": "bsx-wordpress-example",
 	"relatedPackages": [
 		{
 			"path": "./../../../../bsx-basic-style",

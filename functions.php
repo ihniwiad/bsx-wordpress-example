@@ -103,11 +103,12 @@ function meta_og() {
 <meta property="og:site_name" content="Your Site Name">
 <meta property="og:image" content="<?php echo $img_src[0]; ?>">
 <?php
-    } else {
+    } 
+    else {
         return;
     }
 }
-add_action('wp_head', 'meta_og', 5);
+add_action( 'wp_head', 'meta_og', 5 );
 
 
 /**
@@ -134,7 +135,7 @@ add_action( 'wp_enqueue_scripts', 'wpassist_remove_block_library_css' );
 
 
 /**
- * remove more unwanted embes stuff
+ * remove more unwanted embed stuff
  */
     
 add_action( 'init', function() {
@@ -211,7 +212,7 @@ add_theme_support( 'post-thumbnails' );
 /**
  * custom post type
  */
-
+/*
 function create_custom_post() {
     register_post_type( 'custom',
         array(
@@ -231,12 +232,12 @@ function create_custom_post() {
     );
 }
 add_action( 'init', 'create_custom_post' );
-
+*/
 
 /**
  * custom another post type (references)
  */
-
+/*
 function create_references_post() {
     register_post_type( 'references',
         array(
@@ -262,12 +263,12 @@ function create_references_post() {
     register_taxonomy_for_object_type( 'post_tag', 'references' );
 }
 add_action( 'init', 'create_references_post' );
-
+*/
 
 /**
  * add custom fields meta box
  */
-
+/*
 function add_your_fields_meta_box() {
     add_meta_box(
         'references_meta_box', // $id
@@ -279,9 +280,9 @@ function add_your_fields_meta_box() {
     );
 }
 add_action( 'add_meta_boxes', 'add_your_fields_meta_box' );
+*/
 
-
-
+/*
 function show_your_fields_meta_box() {
 
     global $post;
@@ -410,4 +411,6 @@ function save_your_fields_meta( $post_id ) {
     }
 }
 add_action( 'save_post', 'save_your_fields_meta' );
+*/
+
 
