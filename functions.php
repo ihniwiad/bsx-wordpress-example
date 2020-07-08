@@ -38,6 +38,7 @@ function include_css_and_js() {
 add_action( 'wp_enqueue_scripts', 'include_css_and_js' );
 */
 
+
 /**
  * disable emoji
  */
@@ -58,6 +59,18 @@ add_action( 'init', 'disable_wp_emojicons' );
 function disable_emojicons_tinymce( $plugins ) {
     return is_array( $plugins ) ? array_diff( $plugins, array( 'wpemoji' ) ) : array();
 }
+
+
+/**
+ * remove block editor styles from frontend.
+ */
+
+function remove_editor_blocks_assets() {
+    if ( ! is_admin() ) {
+        wp_dequeue_style( 'editor-blocks' );
+    }
+}
+add_action( 'enqueue_block_assets', 'remove_editor_blocks_assets' );
 
 
 /**
