@@ -43,7 +43,28 @@ if ( ! class_exists( 'Bsx_Walker_Page' ) ) {
 				$indent = '';
 			}
 
-			$css_class = array( 'page-' . $page->ID );
+			$css_class = array();
+
+			// check if page has custom field `nav_type` to configure dropdown type, if value `'1'` add .bsx-appnav-bigmenu-dropdown to <li>
+			$nav_type_custom_config = get_post_custom_values( 'nav_type', $page->ID );
+			$is_bigmenu = false;
+			if ( $nav_type_custom_config != null ) {
+				foreach ( $nav_type_custom_config as $key => $value ) {
+					if ( $value && intval( $value ) > 0 ) {
+						$css_class[] = 'bsx-appnav-bigmenu-dropdown';
+						if ( intval( $value ) > 1 ) {
+							$css_class[] = 'columns-' . $value;
+						}
+						else {
+							// default 3 columns
+							$css_class[] = 'columns-3';
+						}
+						break;
+					}
+				}
+			}
+
+			$css_class[] = 'page-' . $page->ID;
 
 			if ( isset( $args['pages_with_children'][ $page->ID ] ) ) {
 				//$css_class[] = 'page_item_has_children';
