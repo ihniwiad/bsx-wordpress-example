@@ -98,7 +98,7 @@
 
 
 			
-			<ul class="bsx-appnav-navbar-nav bsx-main-navbar-nav" aria-labelledby="navbarDropdownMenuLink-0">
+			<ul class="bsx-appnav-navbar-nav bsx-main-navbar-nav" aria-labelledby="toggle-navbar-collapse">
 
 
 
