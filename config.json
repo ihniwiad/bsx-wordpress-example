@@ -2,8 +2,8 @@
 	"projectName": "bsx-wordpress-example",
 	"relatedPackages": [
 		{
-			"path": "./../../../../bsx-basic-style",
-			"scssPath": "../../../../../../bsx-basic-style"
+			"path": "./../bsx-basic-style",
+			"scssPath": "../../../bsx-basic-style"
 		},
 		{
 			"path": ".",
@@ -30,6 +30,6 @@
 	"scssDestFile": 				"/resources/scss/style.scss",
 	"scssAtfDestFile": 				"/resources/scss/atf.scss",
 	"publish": {
-		"dest": null
+		"dest": "../../../../../Applications/MAMP/htdocs/wordpress/wp-content/themes/"
 	}
 }
