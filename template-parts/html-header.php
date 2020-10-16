@@ -83,7 +83,9 @@
 		</button>
 
 		<a class="bsx-appnav-navbar-brand" href="<?php echo get_bloginfo( 'url' ) . '/'; ?>">
-			<img src="<?php echo $headerLogoFilePath ?>" alt="<?php echo $headerLogoAlt ?>" width="<?php echo $headerLogoWidth ?>" height="<?php echo $headerLogoHeight ?>">
+			<!-- inline svg logo -->
+			<?php include 'inline-svg-logo.php'; ?>
+			<!-- img src="<?php echo $headerLogoFilePath ?>" alt="<?php echo $headerLogoAlt ?>" width="<?php echo $headerLogoWidth ?>" height="<?php echo $headerLogoHeight ?>" -->
 		</a>
 
 		<!--

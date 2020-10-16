@@ -24,11 +24,10 @@ if ( class_exists( 'BsxPhotoswipe001' ) ) {
 
 
 // logo
-
 $headerLogoFilePath = $assetsPath.'img/ci/logo/logo.svg';
 $headerLogoAlt = 'Example Logo';
 $headerLogoWidth = 136;
-$headerLogoHeight = 27;
+$headerLogoHeight = 32;
 
 $footerLogoFilePath = $headerLogoFilePath;
 $footerLogoAlt = $headerLogoAlt;
