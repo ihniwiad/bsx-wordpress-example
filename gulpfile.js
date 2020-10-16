@@ -899,4 +899,15 @@ exports.css = series(
     publishFolderCreate
 );
 
+exports.js = series(
+    jsFolderClean,
+    parallel(
+        series( jsVendorStackPrepare, vendorJsConcat ),
+        series( jsStackPrepare, jsConcat )
+    ),
+    jsMinify,
+    publishFolderDelete,
+    publishFolderCreate
+);
+
 
