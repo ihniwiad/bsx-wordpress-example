@@ -7,6 +7,9 @@
 			"key": "/template/template-parts-inline-svg-logo"
 		},
 		{
+			"key": "/template/template-parts-fonts-preloads"
+		},
+		{
 			"key": "/scss/global-mixins-breakpoints"
 		},
 		{
@@ -25,10 +28,10 @@
 			"key": "/scss/atf-sr-only"
 		},
 		{
-			"key": "/fonts/font-awesome"
+			"key": "/fonts/roboto"
 		},
 		{
-			"key": "/fonts/roboto"
+			"key": "/fonts/font-awesome"
 		},
 		{
 			"key": "/js/vendor/modernizr"

@@ -15,18 +15,31 @@ include 'variables.php';
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
+		<!-- 
 		<?php // <title>bsx Wordpress Template</title> ?>
+		-->
+
+		<!-- preload fonts -->
+		<?php include 'template-parts/fonts-preloads.php'; ?>
 
 		<!-- atf style -->
 		<?php include 'template-parts/atf-style.php'; ?>
 		
 		<!-- css -->
 		<?php
-			// css file version
-			$cssFilePath = $rootRelatedAssetsPath . 'css/style.min.css';
+			// get css file version using absolute file path
+			$cssFileName = 'css/style.min.css';
+			$cssFilePath = $rootRelatedAssetsPath . $cssFileName;
 			$cssVersion = file_exists( $cssFilePath ) ? filemtime( $cssFilePath ) : 'null';
+
+			// make path using relative path & version
+			$currentCssFilePath = $assetsPath . $cssFileName . '?v=' . $cssVersion;
+			if ( $isDevMode ) {
+				$currentCssFilePath = str_replace ( '.min', '' , $currentCssFilePath );
+			}
 		?>
-		<link href="<?php echo $assetsPath ?>css/style<?php if ( ! $isDevMode ) { ?>.min<?php } ?>.css?v=<?php echo $cssVersion ?>" rel="stylesheet">
+		<link rel="preload" href="<?php echo $currentCssFilePath ?>" as="style">
+		<link href="<?php echo $currentCssFilePath ?>" rel="stylesheet">
 
 		<!-- favicons -->
 	    <link rel="icon" type="image/png" href="<?php echo $assetsPath ?>img/ci/icon/favicon-16x16.png" sizes="16x16">
