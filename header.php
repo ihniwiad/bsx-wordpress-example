@@ -19,26 +19,33 @@ include 'variables.php';
 		<?php // <title>bsx Wordpress Template</title> ?>
 		-->
 
-		<!-- preload fonts -->
+		<!-- fonts preload -->
 		<?php include 'template-parts/fonts-preloads.php'; ?>
+		<?php
+			// make css & js paths using relative path & version
+			$currentCssFilePath = $assetsPath . $cssFileName . '?v=' . $cssVersion;
+			//$currentVendorJsFilePath = $assetsPath . $vendorJsFileName . '?v=' . $vendorJsVersion;
+			//$currentScriptsJsFilePath = $assetsPath . $scriptsJsFileName . '?v=' . $scriptsJsVersion;
+			if ( $isDevMode ) {
+				$currentCssFilePath = str_replace ( '.min', '' , $currentCssFilePath );
+				//$currentVendorJsFilePath = str_replace ( '.min', '' , $currentVendorJsFilePath );
+				//$currentScriptsJsFilePath = str_replace ( '.min', '' , $currentScriptsJsFilePath );
+			}
+		?>
+		<!-- css preload -->
+		<link rel="preload" href="<?php echo $currentCssFilePath ?>" as="style">
+		<?php
+		/*
+		<!-- TEST – js preload -->
+		<link rel="preload" href="<?php echo $currentVendorJsFilePath ?>" as="script">
+		<link rel="preload" href="<?php echo $currentScriptsJsFilePath ?>" as="script">
+		*/
+		?>
 
 		<!-- atf style -->
 		<?php include 'template-parts/atf-style.php'; ?>
 		
 		<!-- css -->
-		<?php
-			// get css file version using absolute file path
-			$cssFileName = 'css/style.min.css';
-			$cssFilePath = $rootRelatedAssetsPath . $cssFileName;
-			$cssVersion = file_exists( $cssFilePath ) ? filemtime( $cssFilePath ) : 'null';
-
-			// make path using relative path & version
-			$currentCssFilePath = $assetsPath . $cssFileName . '?v=' . $cssVersion;
-			if ( $isDevMode ) {
-				$currentCssFilePath = str_replace ( '.min', '' , $currentCssFilePath );
-			}
-		?>
-		<link rel="preload" href="<?php echo $currentCssFilePath ?>" as="style">
 		<link href="<?php echo $currentCssFilePath ?>" rel="stylesheet">
 
 		<!-- favicons -->

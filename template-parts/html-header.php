@@ -1,14 +1,14 @@
 <?php 
 
 	// prepare header config 
-	$headerConfig = array(
-		'logo' => array(
-			'filePath' => $headerLogoFilePath,
-			'alt' => $headerLogoAlt,
-			'width' => $headerLogoWidth,
-			'height' => $headerLogoHeight
-		)
-	);
+	// $headerConfig = array(
+	// 	'logo' => array(
+	// 		'filePath' => $headerLogoFilePath,
+	// 		'alt' => $headerLogoAlt,
+	// 		'width' => $headerLogoWidth,
+	// 		'height' => $headerLogoHeight
+	// 	)
+	// );
 
 	// print header
 	/*

@@ -12,6 +12,20 @@ $relativeAssetsPath = 'assets/';
 $assetsPath = $rootPath . $relativeAssetsPath;
 $rootRelatedAssetsPath = explode( $homeUrl, $assetsPath )[ 1 ];
 
+// get css file version using absolute file path
+$cssFileName = 'css/style.min.css';
+$cssFilePath = $rootRelatedAssetsPath . $cssFileName;
+$cssVersion = file_exists( $cssFilePath ) ? filemtime( $cssFilePath ) : 'null';
+
+// get js file versions
+$vendorJsFileName = 'js/vendor.min.js';
+$vendorJsFilePath = $rootRelatedAssetsPath . $vendorJsFileName;
+$vendorJsVersion = file_exists( $vendorJsFilePath ) ? filemtime( $vendorJsFilePath ) : 'null';
+
+$scriptsJsFileName = 'js/scripts.min.js';
+$scriptsJsFilePath = $rootRelatedAssetsPath . $scriptsJsFileName;
+$scriptsJsVersion = file_exists( $scriptsJsFilePath ) ? filemtime( $scriptsJsFilePath ) : 'null';
+
 
 // include classes file
 //include './classes/include-classes.php';
