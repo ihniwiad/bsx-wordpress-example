@@ -2450,7 +2450,7 @@ link into hash tab:
             var currentSrc = '';
             for ( var i = 0; i < srcsetJson.length; i++ ) {
                 //console.log( i + ': media: ' + srcsetJson[ i ].media + ', src: ' + srcsetJson[ i ].src );
-                if ( window.matchMedia( srcsetJson[ i ].media ).matches ) {
+                if ( typeof srcsetJson[ i ].media != 'undefined' && typeof srcsetJson[ i ].src != 'undefined' && window.matchMedia( srcsetJson[ i ].media ).matches ) {
                     //console.log( 'match: ' + srcsetJson[ i ].src );
                     currentSrc = srcsetJson[ i ].src;
                     break;
