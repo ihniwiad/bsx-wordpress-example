@@ -2441,11 +2441,7 @@ link into hash tab:
             picture_height_data_attribute  : "height"
         };
 
-
-
-
-
-        // get responsive sources from `data-srcset` or from `data-src`
+        // get responsive sources from `data-srcset` and/or from `data-src`
         _getMediaMatchingSrc = function( srcsetJson, src ) {
             var currentSrc = '';
             for ( var i = 0; i < srcsetJson.length; i++ ) {
