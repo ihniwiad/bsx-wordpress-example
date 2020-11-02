@@ -126,7 +126,7 @@ function filesStackPrepare( cb ) {
     var COMPONENTS_JSON = JSON.parse( fs.readFileSync( COMPONENTS_CONFIG_FILE_PATH ) );
 
     for ( var i = 0; i < COMPONENTS_JSON.use.length; i++ ) {
-        var CURRENT_COMPONENT_PLUGIN = COMPONENTS_JSON.use[ i ].plugin || 0;
+        var CURRENT_COMPONENT_PLUGIN = COMPONENTS_JSON.use[ i ].package || 0;
         var CURRENT_PLUGIN_PATH = config.relatedPackages[ CURRENT_COMPONENT_PLUGIN ].path;
         var CURRENT_COMPONENT_PATH = COMPONENTS_JSON.use[ i ].key;
 
@@ -246,7 +246,7 @@ function phpClassesStackPrepare( cb ) {
     var COMPONENTS_JSON = JSON.parse( fs.readFileSync( COMPONENTS_CONFIG_FILE_PATH ) );
 
     for ( var i = 0; i < COMPONENTS_JSON.use.length; i++ ) {
-        var CURRENT_COMPONENT_PLUGIN = COMPONENTS_JSON.use[ i ].plugin || 0;
+        var CURRENT_COMPONENT_PLUGIN = COMPONENTS_JSON.use[ i ].package || 0;
         var CURRENT_PLUGIN_PATH = config.relatedPackages[ CURRENT_COMPONENT_PLUGIN ].path;
         var CURRENT_COMPONENT_PATH = COMPONENTS_JSON.use[ i ].key;
 
@@ -458,7 +458,7 @@ function scssConcat( cb ) {
     if ( !! COMPONENTS_JSON && !! COMPONENTS_JSON.use ) {
 
         for ( var i = 0; i < COMPONENTS_JSON.use.length; i++ ) {
-            var CURRENT_COMPONENT_PLUGIN = COMPONENTS_JSON.use[ i ].plugin || 0;
+            var CURRENT_COMPONENT_PLUGIN = COMPONENTS_JSON.use[ i ].package || 0;
             var CURRENT_PLUGIN_PATH = config.relatedPackages[ CURRENT_COMPONENT_PLUGIN ].path;
             var CURRENT_COMPONENT_PATH = COMPONENTS_JSON.use[ i ].key;
 
@@ -591,7 +591,7 @@ function jsStackPrepare( cb ) {
     var COMPONENTS_JSON = JSON.parse( fs.readFileSync( COMPONENTS_CONFIG_FILE_PATH ) );
 
     for ( var i = 0; i < COMPONENTS_JSON.use.length; i++ ) {
-        var CURRENT_COMPONENT_PLUGIN = COMPONENTS_JSON.use[ i ].plugin || 0;
+        var CURRENT_COMPONENT_PLUGIN = COMPONENTS_JSON.use[ i ].package || 0;
         var CURRENT_PLUGIN_PATH = config.relatedPackages[ CURRENT_COMPONENT_PLUGIN ].path;
         var CURRENT_COMPONENT_PATH = COMPONENTS_JSON.use[ i ].key;
 
@@ -640,7 +640,7 @@ function jsVendorStackPrepare( cb ) {
     var COMPONENTS_JSON = JSON.parse( fs.readFileSync( COMPONENTS_CONFIG_FILE_PATH ) );
 
     for ( var i = 0; i < COMPONENTS_JSON.use.length; i++ ) {
-        var CURRENT_COMPONENT_PLUGIN = COMPONENTS_JSON.use[ i ].plugin || 0;
+        var CURRENT_COMPONENT_PLUGIN = COMPONENTS_JSON.use[ i ].package || 0;
         var CURRENT_PLUGIN_PATH = config.relatedPackages[ CURRENT_COMPONENT_PLUGIN ].path;
         var CURRENT_COMPONENT_PATH = COMPONENTS_JSON.use[ i ].key;
 
@@ -983,11 +983,14 @@ const js = series(
 const css = series(
     files,
     projectNameReplace,
+    logoReplace,
     cssFolderClean,
     scssConcat,
     scssToCss,
     cssCleanAndMinify,
+    cssFontsOptimize,
     atfCssInclude,
+    preloadFontsReplace,
 );
 
 const publish = series(
