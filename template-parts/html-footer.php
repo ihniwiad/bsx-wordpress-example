@@ -148,7 +148,7 @@
 
 		<div class="row small">
 			<div class="col-sm">
-				&copy; Copyright <?php echo date_format( date_create(), 'Y' ); ?> <a class="footer-link" href="<?php echo get_bloginfo( 'url' ) . '/'; ?>">somebody</a>
+				&copy; Copyright <?php echo date_format( date_create(), 'Y' ); ?> <a class="footer-link" href="<?php echo get_bloginfo( 'url' ) . '/'; ?>"><?php echo get_bloginfo( 'name' ); ?></a>
 			</div>
 			<div class="col-sm text-right">
 				<a class="footer-link" href="#">Some</a>&ensp;|&ensp;<a class="footer-link" href="#">More</a>&ensp;|&ensp;<a class="footer-link" href="#">Links</a>
