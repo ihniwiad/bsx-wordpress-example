@@ -10,7 +10,9 @@ $resourcesPath = 'resources/';
 
 $relativeAssetsPath = 'assets/';
 $assetsPath = $rootPath . $relativeAssetsPath;
-$rootRelatedAssetsPath = explode( $homeUrl, $assetsPath )[ 1 ];
+
+// make equal protocol
+$rootRelatedAssetsPath = explode( str_replace( 'https://', 'http://', $homeUrl ), str_replace( 'https://', 'http://', $assetsPath ) )[ 1 ];
 
 // get css file version using absolute file path
 $cssFileName = 'css/style.min.css';
