@@ -30,6 +30,26 @@ if ( ! class_exists( 'Bsx_Walker_Page' ) ) {
 
 			$createClickableParentLinkChild = true;
 
+			// get nav config from meta box
+			$meta_hidden_in_main_nav = 0;
+			$meta_nav_type = 0;
+
+			$meta = get_post_meta( $page->ID, 'nav_fields', true );
+
+			if ( isset( $meta ) ) {
+				if ( isset( $meta[ 'hidden_in_main_nav' ] ) ) {
+					echo( '<script>console.log( \'$meta[ "hidden_in_main_nav" ] (' . $page->ID . '): ' . $meta[ 'hidden_in_main_nav' ] . '\' );</script>' );
+					$meta_hidden_in_main_nav = $meta[ 'hidden_in_main_nav' ];
+				}
+
+				if ( isset( $meta[ 'nav_type' ] ) ) {
+					// $nav_type_custom_config = $meta[ 'nav_type' ];
+					echo( '<script>console.log( \'$meta[ "nav_type" ] (' . $page->ID . '): ' . $meta[ 'nav_type' ] . '\' );</script>' );
+					$meta_nav_type = $meta[ 'nav_type' ];
+				}
+				
+			}
+
 			if ( isset( $args['item_spacing'] ) && 'preserve' === $args['item_spacing'] ) {
 				$t = "\t";
 				$n = "\n";
@@ -45,21 +65,18 @@ if ( ! class_exists( 'Bsx_Walker_Page' ) ) {
 
 			$css_class = array();
 
-			// check if page has custom field `nav_type` to configure dropdown type, if value `'1'` add .bsx-appnav-bigmenu-dropdown to <li>
-			$nav_type_custom_config = get_post_custom_values( 'nav_type', $page->ID );
-			$is_bigmenu = false;
-			if ( $nav_type_custom_config != null ) {
-				foreach ( $nav_type_custom_config as $key => $value ) {
-					if ( $value && intval( $value ) > 0 ) {
-						$css_class[] = 'bsx-appnav-bigmenu-dropdown';
-						if ( intval( $value ) > 1 ) {
-							$css_class[] = 'columns-' . $value;
-						}
-						else {
-							// default 3 columns
-							$css_class[] = 'columns-3';
-						}
-						break;
+			// check if page has custom meta `nav_type` to configure dropdown type, if value `'1'` add .bsx-appnav-bigmenu-dropdown to <li>
+
+			// make bigmenu if config set
+			if ( $meta_nav_type != 0 ) {
+				if ( $meta_nav_type && intval( $meta_nav_type ) > 0 ) {
+					$css_class[] = 'bsx-appnav-bigmenu-dropdown';
+					if ( intval( $meta_nav_type ) > 1 ) {
+						$css_class[] = 'columns-' . $meta_nav_type;
+					}
+					else {
+						// default 3 columns
+						$css_class[] = 'columns-3';
 					}
 				}
 			}
@@ -193,41 +210,45 @@ if ( ! class_exists( 'Bsx_Walker_Page' ) ) {
 			}
 			*/
 
-			$output .= $indent . sprintf(
-				'<li%s>%s<a%s>%s%s%s</a>%s',
-				$css_classes,
-				$args['list_item_before'],
-				$attributes,
-				$args['link_before'],
-				/** This filter is documented in wp-includes/post-template.php */
-				apply_filters( 'the_title', $page->post_title, $page->ID ),
-				$args['link_after'],
-				$args['list_item_after']
-			);
+			if ( ! $meta_hidden_in_main_nav ) {
 
-			/*
-			if ( ! empty( $args['show_date'] ) ) {
-				if ( 'modified' === $args['show_date'] ) {
-					$time = $page->post_modified;
-				} else {
-					$time = $page->post_date;
+				$output .= $indent . sprintf(
+					'<li%s>%s<a%s>%s%s%s</a>%s',
+					$css_classes,
+					$args['list_item_before'],
+					$attributes,
+					$args['link_before'],
+					/** This filter is documented in wp-includes/post-template.php */
+					apply_filters( 'the_title', $page->post_title, $page->ID ),
+					$args['link_after'],
+					$args['list_item_after']
+				);
+
+				/*
+				if ( ! empty( $args['show_date'] ) ) {
+					if ( 'modified' === $args['show_date'] ) {
+						$time = $page->post_modified;
+					} else {
+						$time = $page->post_date;
+					}
+
+					$date_format = empty( $args['date_format'] ) ? '' : $args['date_format'];
+					$output     .= ' ' . mysql2date( $date_format, $time );
+				}
+				*/
+
+				// add opening ul here since required page id is known here but not in `start_lvl()`
+				if ( isset( $args['pages_with_children'][ $page->ID ] ) ) {
+					// TODO: manage lang (`Menüebene schließen`, `Zurück`)
+					$output .= "{$n}{$indent}<ul aria-labelledby=\"" . $linkId . "\">{$n}{$indent}<li class=\"bsx-appnav-back-link\">{$n}{$indent}<a href=\"#\" aria-label=\"Menüebene schließen\" data-label=\"Zurück\" data-fn=\"dropdown-multilevel-close\"></a>{$n}</li>{$n}";
+
+					if ( $createClickableParentLinkChild ) {
+						// TODO: manage lang (`Übersicht`)
+						$output .= "<li class=\"page-" . $page->ID . "\"><a href=\"" . $pageHref . "\">Übersicht</a></li>";
+					}
 				}
 
-				$date_format = empty( $args['date_format'] ) ? '' : $args['date_format'];
-				$output     .= ' ' . mysql2date( $date_format, $time );
-			}
-			*/
-
-			// add opening ul here since required page id is known here but not in `start_lvl()`
-			if ( isset( $args['pages_with_children'][ $page->ID ] ) ) {
-				// TODO: manage lang (`Menüebene schließen`, `Zurück`)
-				$output .= "{$n}{$indent}<ul aria-labelledby=\"" . $linkId . "\">{$n}{$indent}<li class=\"bsx-appnav-back-link\">{$n}{$indent}<a href=\"#\" aria-label=\"Menüebene schließen\" data-label=\"Zurück\" data-fn=\"dropdown-multilevel-close\"></a>{$n}</li>{$n}";
-
-				if ( $createClickableParentLinkChild ) {
-					// TODO: manage lang (`Übersicht`)
-					$output .= "<li class=\"page-" . $page->ID . "\"><a href=\"" . $pageHref . "\">Übersicht</a></li>";
-				}
-			}
+			} // /! $meta_hidden_in_main_nav
 		}
 
 
