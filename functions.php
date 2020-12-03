@@ -174,43 +174,159 @@ add_action( 'admin_menu', 'custom_settings_add_menu' );
  */
 
 function custom_settings_page() { ?>
-	<div class="wrap">
-		<h1>Custom Settings</h1>
-		<form method="post" action="options.php">
-				<?php
-					settings_fields( 'section' );
-					do_settings_sections( 'theme-options' );
-					submit_button();
-				?>
-		</form>
-	</div>
+    <div class="wrap">
+        <h1>Custom Settings</h1>
+        <form method="post" action="options.php">
+                <?php
+                    settings_fields( 'section' );
+                    do_settings_sections( 'theme-options' );
+                    submit_button();
+                ?>
+        </form>
+    </div>
 <?php }
 
-// Twitter
-function setting_twitter() { ?>
-	<input type="text" name="twitter" id="twitter" value="<?php echo get_option( 'twitter' ); ?>" />
+// phone
+function setting_phone() { ?>
+    <input type="text" name="phone" id="phone" value="<?php echo get_option( 'phone' ); ?>" />
 <?php }
 
-// GitHub
-function setting_github() { ?>
-	<input type="text" name="github" id="github" value="<?php echo get_option('github'); ?>" />
+// mail
+function setting_mail() { ?>
+    <input type="text" name="mail" id="mail" value="<?php echo get_option( 'mail' ); ?>" />
+<?php }
+
+// show phone & mail in footer
+function setting_footer_phone_mail_show() { ?>
+    <label><input type="checkbox" name="footer_phone_mail_show" id="footer_phone_mail_show" value="1" <?php if ( get_option('footer_phone_mail_show') ) echo 'checked' ?> />Yes</label>
 <?php }
 
 // Facebook
 function setting_facebook() { ?>
-	<input type="text" name="facebook" id="facebook" value="<?php echo get_option('facebook'); ?>" />
+    <input type="text" name="facebook" id="facebook" value="<?php echo get_option('facebook'); ?>" />
 <?php }
 
+// Twitter
+function setting_twitter() { ?>
+    <input type="text" name="twitter" id="twitter" value="<?php echo get_option( 'twitter' ); ?>" />
+<?php }
+
+// Instagram
+function setting_instagram() { ?>
+    <input type="text" name="instagram" id="instagram" value="<?php echo get_option( 'instagram' ); ?>" />
+<?php }
+
+// Google Plus
+function setting_googleplus() { ?>
+    <input type="text" name="googleplus" id="googleplus" value="<?php echo get_option( 'googleplus' ); ?>" />
+<?php }
+
+// Xing
+function setting_xing() { ?>
+    <input type="text" name="xing" id="xing" value="<?php echo get_option( 'xing' ); ?>" />
+<?php }
+
+// use social media colors
+function setting_social_media_colors_use() { ?>
+    <label><input type="checkbox" name="social_media_colors_use" id="social_media_colors_use" value="1" <?php if ( get_option('social_media_colors_use') ) echo 'checked' ?> />Yes</label>
+<?php }
+
+// GitHub
+function setting_github() { ?>
+    <input type="text" name="github" id="github" value="<?php echo get_option('github'); ?>" />
+<?php }
+
+// footer links
+/*
+// function print_footer_link_input( $number, $type ) { ?>
+//     <input type="text" name="<?php echo "footer_link_$number_$type"; ?>" id="<?php echo "footer_link_$number_$type"; ?>" value="<?php echo get_option( "footer_link_$number_$type" ); ?>" />
+// <?php }
+*/
+function print_footer_link_0_title_input() { ?>
+    <input type="text" name="footer_link_0_title" id="footer_link_0_title" value="<?php echo get_option( 'footer_link_0_title' ); ?>" />
+<?php }
+function print_footer_link_0_url_input() { ?>
+    <input type="text" name="footer_link_0_url" id="footer_link_0_url" value="<?php echo get_option( 'footer_link_0_url' ); ?>" />
+<?php }
+function print_footer_link_1_title_input() { ?>
+    <input type="text" name="footer_link_1_title" id="footer_link_1_title" value="<?php echo get_option( 'footer_link_1_title' ); ?>" />
+<?php }
+function print_footer_link_1_url_input() { ?>
+    <input type="text" name="footer_link_1_url" id="footer_link_1_url" value="<?php echo get_option( 'footer_link_1_url' ); ?>" />
+<?php }
+function print_footer_link_2_title_input() { ?>
+    <input type="text" name="footer_link_2_title" id="footer_link_2_title" value="<?php echo get_option( 'footer_link_2_title' ); ?>" />
+<?php }
+function print_footer_link_2_url_input() { ?>
+    <input type="text" name="footer_link_2_url" id="footer_link_2_url" value="<?php echo get_option( 'footer_link_2_url' ); ?>" />
+<?php }
+
+
 function custom_settings_page_setup() {
-	add_settings_section( 'section', 'All Settings', null, 'theme-options' );
 
-	add_settings_field( 'twitter', 'Twitter URL', 'setting_twitter', 'theme-options', 'section' );
-	add_settings_field( 'github', 'GitHub URL', 'setting_github', 'theme-options', 'section' );
-	add_settings_field( 'facebook', 'Facebook URL', 'setting_facebook', 'theme-options', 'section' );
+    // contact
+    add_settings_section( 'contact_section', 'Contact Settings', null, 'theme-options' );
 
-	register_setting('section', 'twitter');
-	register_setting( 'section', 'github' );
-	register_setting( 'section', 'facebook' );
+    add_settings_field( 'phone', 'Phone', 'setting_phone', 'theme-options', 'contact_section' );
+    add_settings_field( 'mail', 'Mail', 'setting_mail', 'theme-options', 'contact_section' );
+    add_settings_field( 'footer_phone_mail_show', 'Show Phone & Mail in footer', 'setting_footer_phone_mail_show', 'theme-options', 'contact_section' );
+
+    register_setting( 'section', 'phone' );
+    register_setting( 'section', 'mail' );
+    register_setting( 'section', 'footer_phone_mail_show' );
+
+    // social media
+    add_settings_section( 'social_media_section', 'Social Media Settings', null, 'theme-options' );
+
+    add_settings_field( 'facebook', 'Facebook URL', 'setting_facebook', 'theme-options', 'social_media_section' );
+    add_settings_field( 'twitter', 'Twitter URL', 'setting_twitter', 'theme-options', 'social_media_section' );
+    add_settings_field( 'instagram', 'Instagram URL', 'setting_instagram', 'theme-options', 'social_media_section' );
+    add_settings_field( 'googleplus', 'Google Plus URL', 'setting_googleplus', 'theme-options', 'social_media_section' );
+    add_settings_field( 'xing', 'Xing URL', 'setting_xing', 'theme-options', 'social_media_section' );
+    add_settings_field( 'social_media_colors_use', 'Use Social Media colors in footer', 'setting_social_media_colors_use', 'theme-options', 'social_media_section' );
+
+    register_setting( 'section', 'facebook' );
+    register_setting( 'section', 'twitter' );
+    register_setting( 'section', 'instagram' );
+    register_setting( 'section', 'googleplus' );
+    register_setting( 'section', 'xing' );
+    register_setting( 'section', 'social_media_colors_use' );
+
+    // footer links
+    add_settings_section( 'footer_links_section', 'Footer Links', null, 'theme-options' );
+
+    // $footer_links_ids = array( '0', '1', '2' );
+    // $footer_links_types = array( 'title', 'url' );
+    // print( '<script> console.log( "TEST: add_settings_section" ); </script>' );
+    // foreach ( $footer_links_ids as $id ) {
+    //     print( '<script> console.log( "TEST: ' . $id . '" ); </script>' );
+    //     foreach ( $footer_links_types as $type ) {
+    //         add_settings_field( "footer_link_$id_$type", "Footer Link $id $type", "print_footer_link_input( $number, $type )", 'theme-options', 'footer_links_section' );
+    //         register_setting( 'section', "footer_link_$id_$type" );
+    //     }
+    // }
+
+    add_settings_field( 'footer_link_0_title', 'Footer Link 1 Title', 'print_footer_link_0_title_input', 'theme-options', 'footer_links_section' );
+    add_settings_field( 'footer_link_0_url', 'Footer Link 1 URL', 'print_footer_link_0_url_input', 'theme-options', 'footer_links_section' );
+    add_settings_field( 'footer_link_1_title', 'Footer Link 2 Title', 'print_footer_link_1_title_input', 'theme-options', 'footer_links_section' );
+    add_settings_field( 'footer_link_1_url', 'Footer Link 2 URL', 'print_footer_link_1_url_input', 'theme-options', 'footer_links_section' );
+    add_settings_field( 'footer_link_2_title', 'Footer Link 3 Title', 'print_footer_link_2_title_input', 'theme-options', 'footer_links_section' );
+    add_settings_field( 'footer_link_2_url', 'Footer Link 3 URL', 'print_footer_link_2_url_input', 'theme-options', 'footer_links_section' );
+
+    register_setting( 'section', 'footer_link_0_title' );
+    register_setting( 'section', 'footer_link_0_url' );
+    register_setting( 'section', 'footer_link_1_title' );
+    register_setting( 'section', 'footer_link_1_url' );
+    register_setting( 'section', 'footer_link_2_title' );
+    register_setting( 'section', 'footer_link_2_url' );
+
+    // dev
+    add_settings_section( 'dev_section', 'Dev Settings', null, 'theme-options' );
+
+    add_settings_field( 'github', 'GitHub URL', 'setting_github', 'theme-options', 'dev_section' );
+
+    register_setting( 'section', 'github' );
+
 }
 add_action( 'admin_init', 'custom_settings_page_setup' );
 

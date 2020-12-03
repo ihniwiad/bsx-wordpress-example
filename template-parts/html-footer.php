@@ -124,34 +124,95 @@
 
 		</div>
 
-		<div class="social-list text-center">
+		<div class="text-center">
 			<ul class="list-inline mb-0">
-				<li class="list-inline-item">
-					<a class="color-hover-facebook" href="#"><i class="fa fa-facebook"></i><span class="sr-only">Facebook</span></a>
-				</li>
-				<li class="list-inline-item">
-					<a class="color-hover-twitter" href="#"><i class="fa fa-twitter"></i><span class="sr-only">Twitter</span></a>
-				</li>
-				<li class="list-inline-item">
-					<a class="color-hover-instagram" href="#"><i class="fa fa-instagram"></i><span class="sr-only">Instagram</span></a>
-				</li>
-				<li class="list-inline-item">
-					<a class="color-hover-google-plus" href="#"><i class="fa fa-google-plus"></i><span class="sr-only">Google plus</span></a>
-				</li>
-				<li class="list-inline-item">
-					<a class="color-hover-xing" href="#"><i class="fa fa-xing"></i><span class="sr-only">Xing</span></a>
-				</li>
+
+				<?php 
+					$footer_phone_mail_show = get_option( 'footer_phone_mail_show' );
+					$phone = get_option( 'phone' );
+					$mail = get_option( 'mail' );
+				?>
+				<?php if ( $footer_phone_mail_show ) { ?>
+					<?php if ( $phone ) { ?>
+						<?php
+							// remove unwanted chars
+							$phoneHref = $phone;
+							$patterns = $phoneHrefRemovePatterns;
+							foreach ( $patterns as $pattern ) {
+								$phoneHref = preg_replace( $pattern, '', $phoneHref );
+							}
+						?>
+						<li class="list-inline-item">
+							<a class="footer-icon-link hover-text-primary" href="<?php echo $phoneHref; ?>"><i class="fa fa-phone"></i><span class="sr-only">Telefon</span></a>
+						</li>
+					<?php } ?>
+					<?php if ( $mail ) { ?>
+						<?php
+							// make attribute from mail address
+							$atPos = strpos( $mail, "@" );
+							$dotPos = strpos( $mail, "." );
+
+							$name = substr( $mail, 0, $atPos );
+							$domain = substr( $mail, $atPos + 1, $dotPos - $atPos - 1 );
+							$extension = substr( $mail, $dotPos + 1 );
+						?>
+						<li class="list-inline-item">
+							<a class="footer-icon-link hover-text-primary" data-fn="create-mt" data-mt-n="<?php echo $name; ?>" data-mt-d="<?php echo $domain; ?>" data-mt-s="<?php echo $extension; ?>"><i class="fa fa-envelope"></i><span class="sr-only">E-Mail</span></a>
+						</li>
+					<?php } ?>
+				<?php } ?>
+
+				<?php
+					$social_media_list = array(
+						array( id => 'facebook', title => 'Facebook', icon => 'facebook' ),
+						array( id => 'twitter', title => 'Twitter', icon => 'twitter' ),
+						array( id => 'instagram', title => 'Instagram', icon => 'instagram' ),
+						array( id => 'googleplus', title => 'Google Plus', icon => 'google-plus' ),
+						array( id => 'xing', title => 'Xing', icon => 'xing' ),
+					);
+
+					$social_media_colors_use = get_option( 'social_media_colors_use' );
+
+					foreach( $social_media_list as $item ) {
+						$social_media_href = get_option( $item[ id ] );
+						// print( 'TEST ' . $item[ id ] );
+						$hover_class_name = ( $social_media_colors_use ) ? 'hover-text-' . $item[ id ] : 'hover-text-primary';
+						if ( $social_media_href ) {
+							?>
+								<li class="list-inline-item">
+									<a class="footer-icon-link <?php echo $hover_class_name; ?>" href="<?php echo $social_media_href; ?>"><i class="fa fa-<?php echo $item[ icon ]; ?>"></i><span class="sr-only"><?php echo $item[ title ]; ?></span></a>
+								</li>
+							<?php
+						}
+					}
+				?>
+
 			</ul>
 		</div>
 
 		<hr class="my-2">
 
 		<div class="row small">
-			<div class="col-sm">
+			<div class="col-sm mb-1">
 				&copy; Copyright <?php echo date_format( date_create(), 'Y' ); ?> <a class="footer-link" href="<?php echo get_bloginfo( 'url' ) . '/'; ?>"><?php echo get_bloginfo( 'name' ); ?></a>
 			</div>
-			<div class="col-sm text-right">
-				<a class="footer-link" href="#">Some</a>&ensp;|&ensp;<a class="footer-link" href="#">More</a>&ensp;|&ensp;<a class="footer-link" href="#">Links</a>
+			<div class="col-sm text-sm-right mb-1">
+				<?php
+				    $footer_links_ids = array( '0', '1', '2' );
+				    $print_html = '';
+				    foreach ( $footer_links_ids as $id ) {
+				    	$title = get_option( 'footer_link_' . $id . '_title' );
+				    	$url = get_option( 'footer_link_' . $id . '_url' );
+			            if ( $title && $url ) {
+				            if ( $print_html != '' ) {
+				            	// is not first filled item (1st and 3rd item may be filled with 2nd empty)
+				            	$print_html .= '&ensp;|&ensp;';
+				            }
+			            	$print_html .= '<a class="footer-link" href="' . $url . '">' . $title . '</a>';
+			            }
+				    }
+				    print( $print_html );
+				?>
 			</div>
 		</div>
 
