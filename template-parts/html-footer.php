@@ -143,7 +143,7 @@
 							}
 						?>
 						<li class="list-inline-item">
-							<a class="footer-icon-link hover-text-primary" href="<?php echo $phoneHref; ?>"><i class="fa fa-phone"></i><span class="sr-only">Telefon</span></a>
+							<a class="footer-icon-link hover-text-primary" href="tel:<?php echo $phoneHref; ?>"><i class="fa fa-phone"></i><span class="sr-only">Telefon</span></a>
 						</li>
 					<?php } ?>
 					<?php if ( $mail ) { ?>
