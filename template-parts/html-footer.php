@@ -180,7 +180,7 @@
 						if ( $social_media_href ) {
 							?>
 								<li class="list-inline-item">
-									<a class="footer-icon-link <?php echo $hover_class_name; ?>" href="<?php echo $social_media_href; ?>"><i class="fa fa-<?php echo $item[ icon ]; ?>"></i><span class="sr-only"><?php echo $item[ title ]; ?></span></a>
+									<a class="footer-icon-link <?php echo $hover_class_name; ?>" href="<?php echo $social_media_href; ?>" target="_blank"><i class="fa fa-<?php echo $item[ icon ]; ?>"></i><span class="sr-only"><?php echo $item[ title ]; ?></span></a>
 								</li>
 							<?php
 						}
@@ -196,7 +196,7 @@
 			<div class="col-sm mb-1">
 				&copy; Copyright <?php echo date_format( date_create(), 'Y' ); ?> <a class="footer-link" href="<?php echo get_bloginfo( 'url' ) . '/'; ?>"><?php echo get_bloginfo( 'name' ); ?></a>
 			</div>
-			<div class="col-sm text-sm-right mb-1">
+			<nav class="col-sm text-sm-right mb-1">
 				<?php
 				    $footer_links_ids = array( '0', '1', '2' );
 				    $print_html = '';
@@ -213,7 +213,7 @@
 				    }
 				    print( $print_html );
 				?>
-			</div>
+			</nav>
 		</div>
 
 	</div>
