@@ -164,23 +164,23 @@
 
 				<?php
 					$social_media_list = array(
-						array( id => 'facebook', title => 'Facebook', icon => 'facebook' ),
-						array( id => 'twitter', title => 'Twitter', icon => 'twitter' ),
-						array( id => 'instagram', title => 'Instagram', icon => 'instagram' ),
-						array( id => 'googleplus', title => 'Google Plus', icon => 'google-plus' ),
-						array( id => 'xing', title => 'Xing', icon => 'xing' ),
+						array( 'id' => 'facebook', 'title' => 'Facebook', 'icon' => 'facebook' ),
+						array( 'id' => 'twitter', 'title' => 'Twitter', 'icon' => 'twitter' ),
+						array( 'id' => 'instagram', 'title' => 'Instagram', 'icon' => 'instagram' ),
+						array( 'id' => 'googleplus', 'title' => 'Google Plus', 'icon' => 'google-plus' ),
+						array( 'id' => 'xing', 'title' => 'Xing', 'icon' => 'xing' ),
 					);
 
 					$social_media_colors_use = get_option( 'social_media_colors_use' );
 
 					foreach( $social_media_list as $item ) {
-						$social_media_href = get_option( $item[ id ] );
-						// print( 'TEST ' . $item[ id ] );
-						$hover_class_name = ( $social_media_colors_use ) ? 'hover-text-' . $item[ id ] : 'hover-text-primary';
+						$social_media_href = get_option( $item[ 'id' ] );
+						// print( 'TEST ' . $item[ 'id' ] );
+						$hover_class_name = ( $social_media_colors_use ) ? 'hover-text-' . $item[ 'id' ] : 'hover-text-primary';
 						if ( $social_media_href ) {
 							?>
 								<li class="list-inline-item">
-									<a class="footer-icon-link <?php echo $hover_class_name; ?>" href="<?php echo $social_media_href; ?>" target="_blank"><i class="fa fa-<?php echo $item[ icon ]; ?>"></i><span class="sr-only"><?php echo $item[ title ]; ?></span></a>
+									<a class="footer-icon-link <?php echo $hover_class_name; ?>" href="<?php echo $social_media_href; ?>" target="_blank"><i class="fa fa-<?php echo $item[ 'icon' ]; ?>"></i><span class="sr-only"><?php echo $item[ 'title' ]; ?></span></a>
 								</li>
 							<?php
 						}
