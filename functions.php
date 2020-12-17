@@ -622,3 +622,33 @@ function save_nav_fields_meta( $post_id ) {
 }
 add_action( 'save_post', 'save_nav_fields_meta' );
 
+
+// manage allowed block types
+
+function myplugin_allowed_block_types( $allowed_block_types, $post ) {     
+    if ( $post->post_type !== 'page' || $post->post_type !== 'post' ) {
+        return array( 
+            'core/paragraph', 
+            'core/heading', 
+            'core/list', 
+            'bsx-blocks/banner',
+            'bsx-blocks/button', 
+            'bsx-blocks/buttons', 
+            'bsx-blocks/column-row', 
+            'bsx-blocks/column-rows', 
+            'bsx-blocks/container', 
+            'bsx-blocks/groups', 
+            'bsx-blocks/img-gallery', 
+            'bsx-blocks/lazy-img', 
+            'bsx-blocks/col', 
+            'bsx-blocks/row-with-cols', 
+            'bsx-blocks/section', 
+            'bsx-blocks/wrapper', 
+        );
+    }
+ 
+    return $allowed_block_types;
+}
+ 
+add_filter( 'allowed_block_types', 'myplugin_allowed_block_types', 10, 2 );
+
