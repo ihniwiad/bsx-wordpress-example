@@ -38,13 +38,13 @@ if ( ! class_exists( 'Bsx_Walker_Page' ) ) {
 
 			if ( isset( $meta ) ) {
 				if ( isset( $meta[ 'hidden_in_main_nav' ] ) ) {
-					echo( '<script>console.log( \'$meta[ "hidden_in_main_nav" ] (' . $page->ID . '): ' . $meta[ 'hidden_in_main_nav' ] . '\' );</script>' );
+					// echo( '<script>console.log( \'$meta[ "hidden_in_main_nav" ] (' . $page->ID . '): ' . $meta[ 'hidden_in_main_nav' ] . '\' );</script>' );
 					$meta_hidden_in_main_nav = $meta[ 'hidden_in_main_nav' ];
 				}
 
 				if ( isset( $meta[ 'nav_type' ] ) ) {
 					// $nav_type_custom_config = $meta[ 'nav_type' ];
-					echo( '<script>console.log( \'$meta[ "nav_type" ] (' . $page->ID . '): ' . $meta[ 'nav_type' ] . '\' );</script>' );
+					// echo( '<script>console.log( \'$meta[ "nav_type" ] (' . $page->ID . '): ' . $meta[ 'nav_type' ] . '\' );</script>' );
 					$meta_nav_type = $meta[ 'nav_type' ];
 				}
 				
@@ -249,6 +249,10 @@ if ( ! class_exists( 'Bsx_Walker_Page' ) ) {
 				}
 
 			} // /! $meta_hidden_in_main_nav
+			else {
+					// since closing tag cannot be removed open hidden opening tag
+					$output .= $indent . '<li style="display: none !important" aria-hidden="true">';
+			}
 		}
 
 
