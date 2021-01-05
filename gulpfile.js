@@ -1,9 +1,11 @@
 // TODO: update old js
 // TODO: clean
 
+require( 'dotenv' ).config();
+const envConfig = process.env;
+
 const gulp          = require( 'gulp' );
 const { series, parallel } = require( 'gulp' );
-//const { src, dest } = require( 'gulp' );
 const sourcemaps    = require( 'gulp-sourcemaps' );
 const sass          = require( 'gulp-sass' );
 const autoprefixer  = require( 'gulp-autoprefixer' );
@@ -12,11 +14,15 @@ const cleanCSS      = require( 'gulp-clean-css' );
 const clean         = require( 'gulp-clean' );
 const concat        = require( 'gulp-concat' );
 const watch         = require( 'gulp-watch' );
-//const minify        = require( 'gulp-minify' );
 const replace       = require( 'gulp-string-replace' );
 const fs            = require( 'fs' );
 const uglify        = require( 'gulp-uglify' );
 const pipeline      = require( 'readable-stream' ).pipeline;
+
+const babelify      = require( 'babelify' );
+const browserify    = require( 'browserify' );
+const source        = require( 'vinyl-source-stream' );
+const buffer        = require( 'vinyl-buffer' );
 
 
 // include config file
@@ -39,8 +45,10 @@ const defaultPublish = {
     "folderName": config.projectName
 };
 const mergedPublish = Object.assign( {}, defaultPublish, config.publish );
- // NOTE: take care at this path since you’re deleting files outside your project
-const mergedPublishDestFullPath = mergedPublish.dest + '/' + mergedPublish.folderName;
+// NOTE: take care at this path since you’re deleting files outside your project
+// const mergedPublishDestFullPath = mergedPublish.dest + '/' + mergedPublish.folderName;
+
+const mergedPublishDestFullPath = envConfig.PUBLISH_PATH + '/' + mergedPublish.folderName;
 
 
 // general
@@ -95,7 +103,7 @@ const LOG_FILE_PATH = './resources/log.txt';
 // basic functions
 
 function checkAdDotBefore( path ) {
-    return ( path.indexOf( '.' ) != 0 ) ? '.' + path :  path;
+    return ( path != undefined && path.indexOf( '.' ) != 0 ) ? '.' + path : path;
 }
 function splitFilePath( path ) {
     let fileName = ''; 
@@ -588,40 +596,107 @@ function jsLangPrepare( cb ) {
 
 function jsStackPrepare( cb ) {
 
-    var COMPONENTS_JSON = JSON.parse( fs.readFileSync( COMPONENTS_CONFIG_FILE_PATH ) );
+    const COMPONENTS_JSON = JSON.parse( fs.readFileSync( COMPONENTS_CONFIG_FILE_PATH ) );
 
-    for ( var i = 0; i < COMPONENTS_JSON.use.length; i++ ) {
-        var CURRENT_COMPONENT_PLUGIN = COMPONENTS_JSON.use[ i ].package || 0;
-        var CURRENT_PLUGIN_PATH = config.relatedPackages[ CURRENT_COMPONENT_PLUGIN ].path;
-        var CURRENT_COMPONENT_PATH = COMPONENTS_JSON.use[ i ].key;
+    for ( let i = 0; i < COMPONENTS_JSON.use.length; i++ ) {
+        const CURRENT_COMPONENT_PLUGIN = COMPONENTS_JSON.use[ i ].package || 0;
+        const CURRENT_PLUGIN_PATH = config.relatedPackages[ CURRENT_COMPONENT_PLUGIN ].path;
+        const CURRENT_COMPONENT_PATH = COMPONENTS_JSON.use[ i ].key;
 
         // get each components config
-        var CURRENT_COMPONENT_CONFIG = JSON.parse( fs.readFileSync( CURRENT_PLUGIN_PATH + RESOURCES_PATH + COMPONENTS_PATH + CURRENT_COMPONENT_PATH + SINGLE_CONFIG_FILE_NAME ) );
+        let CURRENT_COMPONENT_CONFIG = JSON.parse( fs.readFileSync( CURRENT_PLUGIN_PATH + RESOURCES_PATH + COMPONENTS_PATH + CURRENT_COMPONENT_PATH + SINGLE_CONFIG_FILE_NAME ) );
         if ( !! COMPONENTS_JSON.use[ i ].overrideComponentConfig && COMPONENTS_JSON.use[ i ].overrideComponentConfig !== null ) {
             CURRENT_COMPONENT_CONFIG = merge( CURRENT_COMPONENT_CONFIG, COMPONENTS_JSON.use[ i ].overrideComponentConfig );
         }
 
         // get files src plugin path
-        var CURRENT_COMPONENT_SRC_PLUGIN = ( CURRENT_COMPONENT_CONFIG.srcPlugin === undefined || CURRENT_COMPONENT_CONFIG.srcPlugin === null ) ? CURRENT_COMPONENT_PLUGIN : CURRENT_COMPONENT_CONFIG.srcPlugin;
-        var CURRENT_COMPONENT_SRC_PLUGIN_PATH = config.relatedPackages[ CURRENT_COMPONENT_SRC_PLUGIN ].path;
+        const CURRENT_COMPONENT_SRC_PLUGIN = ( CURRENT_COMPONENT_CONFIG.srcPlugin === undefined || CURRENT_COMPONENT_CONFIG.srcPlugin === null ) ? CURRENT_COMPONENT_PLUGIN : CURRENT_COMPONENT_CONFIG.srcPlugin;
+        const CURRENT_COMPONENT_SRC_PLUGIN_PATH = config.relatedPackages[ CURRENT_COMPONENT_SRC_PLUGIN ].path;
 
         if ( !! CURRENT_COMPONENT_CONFIG.js && CURRENT_COMPONENT_CONFIG.js !== null && !! CURRENT_COMPONENT_CONFIG.js.use && CURRENT_COMPONENT_CONFIG.js.use !== null ) {
-            var CURRENT_SCRIPTS_STACK = CURRENT_COMPONENT_CONFIG.js.use;
-            for ( var j = 0; j < CURRENT_SCRIPTS_STACK.length; j++ ) {
-                var CURRENT_SCRIPTS_FILE = CURRENT_SCRIPTS_STACK[ j ].key;
+            const CURRENT_SCRIPTS_STACK = CURRENT_COMPONENT_CONFIG.js.use;
+            for ( let j = 0; j < CURRENT_SCRIPTS_STACK.length; j++ ) {
+                const CURRENT_SCRIPTS_FILE = CURRENT_SCRIPTS_STACK[ j ].key;
 
-                var FULL_SCRIPTS_PATH = CURRENT_COMPONENT_SRC_PLUGIN_PATH + ( ( CURRENT_SCRIPTS_FILE.indexOf( '/node_modules' ) == 0 || CURRENT_SCRIPTS_FILE.indexOf( '/resources' ) == 0 ) ? '' : RESOURCES_PATH + COMPONENTS_PATH + CURRENT_COMPONENT_PATH ) + CURRENT_SCRIPTS_FILE;
+                const FULL_SCRIPTS_PATH = CURRENT_COMPONENT_SRC_PLUGIN_PATH + ( ( CURRENT_SCRIPTS_FILE.indexOf( '/node_modules' ) == 0 || CURRENT_SCRIPTS_FILE.indexOf( '/resources' ) == 0 ) ? '' : RESOURCES_PATH + COMPONENTS_PATH + CURRENT_COMPONENT_PATH ) + CURRENT_SCRIPTS_FILE;
 
                 SCRIPTS_STACK.push( FULL_SCRIPTS_PATH );
 
-                //LOG += FULL_SCRIPTS_PATH + '\n';
+                // LOG += FULL_SCRIPTS_PATH + '\n';
             }
         }
     }
-    //fs.writeFileSync( LOG_FILE_PATH, LOG );
+    // fs.writeFileSync( LOG_FILE_PATH, LOG );
 
     cb();
 }
+
+
+// TODO: make imports, write into index.js
+// import './another-file.js';
+let jsBundleFileContent = '// this file was generated by gulpfile.js\n\n';
+
+function makeJsBundleFile( cb ) {
+
+    const COMPONENTS_JSON = JSON.parse( fs.readFileSync( COMPONENTS_CONFIG_FILE_PATH ) );
+
+    for ( let i = 0; i < COMPONENTS_JSON.use.length; i++ ) {
+        const CURRENT_COMPONENT_PLUGIN = COMPONENTS_JSON.use[ i ].package || 0;
+        const CURRENT_PLUGIN_PATH = config.relatedPackages[ CURRENT_COMPONENT_PLUGIN ].path;
+        const CURRENT_COMPONENT_PATH = COMPONENTS_JSON.use[ i ].key;
+
+        // get each components config
+        let CURRENT_COMPONENT_CONFIG = JSON.parse( fs.readFileSync( CURRENT_PLUGIN_PATH + RESOURCES_PATH + COMPONENTS_PATH + CURRENT_COMPONENT_PATH + SINGLE_CONFIG_FILE_NAME ) );
+        if ( !! COMPONENTS_JSON.use[ i ].overrideComponentConfig && COMPONENTS_JSON.use[ i ].overrideComponentConfig !== null ) {
+            CURRENT_COMPONENT_CONFIG = merge( CURRENT_COMPONENT_CONFIG, COMPONENTS_JSON.use[ i ].overrideComponentConfig );
+        }
+
+        // get files src plugin path
+        const CURRENT_COMPONENT_SRC_PLUGIN = ( CURRENT_COMPONENT_CONFIG.srcPlugin === undefined || CURRENT_COMPONENT_CONFIG.srcPlugin === null ) ? CURRENT_COMPONENT_PLUGIN : CURRENT_COMPONENT_CONFIG.srcPlugin;
+        const CURRENT_COMPONENT_SRC_PLUGIN_PATH = config.relatedPackages[ CURRENT_COMPONENT_SRC_PLUGIN ].path;
+
+        if ( !! CURRENT_COMPONENT_CONFIG.js && CURRENT_COMPONENT_CONFIG.js !== null && !! CURRENT_COMPONENT_CONFIG.js.use && CURRENT_COMPONENT_CONFIG.js.use !== null ) {
+            const CURRENT_SCRIPTS_STACK = CURRENT_COMPONENT_CONFIG.js.use;
+            for ( let j = 0; j < CURRENT_SCRIPTS_STACK.length; j++ ) {
+                const CURRENT_SCRIPTS_FILE = CURRENT_SCRIPTS_STACK[ j ].key;
+
+                // TODO: add path from index.js file out to basic style package './../.'
+                // get from folder depth of config.paths.js.srcFile
+
+                const FULL_SCRIPTS_PATH = './../.' + CURRENT_COMPONENT_SRC_PLUGIN_PATH + ( ( CURRENT_SCRIPTS_FILE.indexOf( '/node_modules' ) == 0 || CURRENT_SCRIPTS_FILE.indexOf( '/resources' ) == 0 ) ? '' : RESOURCES_PATH + COMPONENTS_PATH + CURRENT_COMPONENT_PATH ) + CURRENT_SCRIPTS_FILE;
+
+                jsBundleFileContent += 'import \'' + FULL_SCRIPTS_PATH + '\';\n';
+
+                // LOG += FULL_SCRIPTS_PATH + '\n';
+            }
+        }
+    }
+    // fs.writeFileSync( LOG_FILE_PATH, LOG );
+
+    fs.writeFileSync( checkAdDotBefore( config.paths.js.srcFile ), jsBundleFileContent );
+
+    cb();
+}
+
+const babelJsBundle = ( cb ) => {
+
+    return browserify( {
+            entries: [ checkAdDotBefore( config.paths.js.srcFile ) ],
+            debug: true,
+            transform: [
+                babelify.configure( { presets: [ '@babel/preset-env' ] } ),
+            ],
+        } )
+        .bundle()
+        .pipe( source( SCRIPTS_FILE_NAME ) )
+        .pipe( gulp.dest( JS_DEST_PATH ) )
+        .pipe( buffer() )
+    ;
+
+    cb();
+}
+
+
 
 function jsConcat( cb ) {
 
@@ -771,7 +846,7 @@ function atfCssInclude( cb ) {
 
 function publishFolderDelete( cb ) {
 
-    if ( !! mergedPublish.dest && !! mergedPublish.folderName ) {
+    if ( !! envConfig.PUBLISH_PATH && !! mergedPublish.folderName ) {
         // console.log( 'delete: ' + mergedPublishDestFullPath );
         return gulp.src( mergedPublishDestFullPath, { read: false, allowEmpty: true } )
             .pipe( clean( { force: true } ) ) // NOTE: take care at this command since you’re deleting files outside your project
@@ -786,7 +861,7 @@ function publishFolderDelete( cb ) {
 
 function publishFolderCreate( cb ) {
 
-    if ( !! mergedPublish.dest && !! mergedPublish.folderName ) {
+    if ( !! envConfig.PUBLISH_PATH && !! mergedPublish.folderName ) {
         // console.log( 'create: ' + mergedPublishDestFullPath + ' (src: ' + mergedPublish.src + ', base: ' + mergedPublish.base + ')' );
         return gulp.src( mergedPublish.src, { base: mergedPublish.base } )
             .pipe( gulp.dest( mergedPublishDestFullPath ) )
@@ -1001,8 +1076,23 @@ const publish = series(
     publishFolderCreate,
 );
 
+const test = series(
+    jsFolderClean,
+    parallel(
+        series( jsVendorStackPrepare, vendorJsConcat ),
+        series( 
+            makeJsBundleFile,
+            babelJsBundle,
+        )
+    ),
+    jsMinify,
+    publish,
+);
+
 
 // exports
+
+exports.test = test;
 
 exports.build = series(
     files,

@@ -30,7 +30,9 @@
 	"scssAddVariablesDestFile": 	"/resources/scss/_components-variables.scss",
 	"scssDestFile": 				"/resources/scss/style.scss",
 	"scssAtfDestFile": 				"/resources/scss/atf.scss",
-	"publish": {
-		"dest": "../../../../../Applications/MAMP/htdocs/wordpress/wp-content/themes/"
+	"paths": {
+		"js": {
+			"srcFile": "/src/js/index.js"
+		}
 	}
 }

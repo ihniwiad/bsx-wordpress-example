@@ -163,13 +163,73 @@
 
 		<div class="bsx-appnav-collapse-backdrop" data-fn="remote-event" data-fn-target="#toggle-navbar-collapse" data-tg="dropdown-multilevel-excluded"></div>
 
+		<ul class="bsx-appnav-navbar-nav bsx-icon-navbar-nav bsx-allmedia-dropdown-nav mr-3">
+			<li class="">
+				<a id="iconnav-link-1" href="javascript:void( 0 );" data-fn="dropdown-multilevel" aria-haspopup="true" aria-expanded="false"><i class="fa fa-phone" aria-hidden="true"></i><span class="sr-only">Telefon</span></a>
+				<ul class="ul-right" aria-labelledby="iconnav-link-1">
+					<li>
+						<?php
+							$phone = get_option( 'phone' );
+							$phoneAlt = 'Please fill custom setting “Phone“ in your Theme Settings.';
+							$phoneHref = $phone;
+							$phoneHrefAlt = '#phone-missing';
+							if ( $phone ) {
+								// remove unwanted chars
+								$patterns = $phoneHrefRemovePatterns;
+								foreach ( $patterns as $pattern ) {
+									$phoneHref = preg_replace( $pattern, '', $phoneHref );
+								}
+								print( '
+									<a class="" href="tel:' . $phoneHref . '">' . $phone . '</a>
+								' );
+							}
+							else {
+								print( '
+									<a class="" href="' . $phoneHrefAlt . '">' . $phoneAlt . '</a>
+								' );
+							}
+						?>
+					</li>
+				</ul>
+			</li>
+			<li class="">
+				<a id="iconnav-link-2" href="javascript:void( 0 );" data-fn="dropdown-multilevel" aria-haspopup="true" aria-expanded="false"><i class="fa fa-envelope" aria-hidden="true"></i><span class="sr-only">E-Mail</span></a>
+				<ul class="ul-right" aria-labelledby="iconnav-link-2">
+					<li>
+						<?php 
+							$mail = get_option( 'mail' );
+							$mailAlt = 'Please fill custom setting “Mail“ in your Theme Settings.';
+							$mailHrefAlt = '#mail-missing';
+							if ( $mail ) {
+								// make attribute from mail address
+								$atPos = strpos( $mail, "@" );
+								$dotPos = strpos( $mail, "." );
+
+								$name = substr( $mail, 0, $atPos );
+								$domain = substr( $mail, $atPos + 1, $dotPos - $atPos - 1 );
+								$extension = substr( $mail, $dotPos + 1 );
+								print( '
+									<a class="create-mt" data-fn="create-mt" data-mt-n="' . $name . '" data-mt-d="' . $domain . '" data-mt-s="' . $extension . '"></a>
+								' );
+							}
+							else {
+								print( '
+									<a class="" href="' . $mailHrefAlt . '">' . $mailAlt . '</a>
+								' );
+							}
+						?>
+					</li>
+				</ul>
+			</li>
+		</ul>
+
 		<?php 
-			if ( class_exists( 'BsxAppNavExampleNav001' ) ) {
-				$BsxAppNavigation = new BsxAppNavExampleNav001;
-				if ( method_exists( $BsxAppNavigation, 'printExampleIconNav' ) ) {
-					$BsxAppNavigation->printExampleIconNav();
-				}
-			}
+			// if ( class_exists( 'BsxAppNavExampleNav001' ) ) {
+			// 	$BsxAppNavigation = new BsxAppNavExampleNav001;
+			// 	if ( method_exists( $BsxAppNavigation, 'printExampleIconNav' ) ) {
+			// 		$BsxAppNavigation->printExampleIconNav();
+			// 	}
+			// }
 		?>
 
 	</nav>

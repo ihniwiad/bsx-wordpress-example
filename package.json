@@ -1,9 +1,25 @@
 {
-  "name": "bsx-example",
+  "name": "bsx-wordpress-example",
   "description": "",
-  "license": "",
+  "license": "GPL-2.0-or-later",
   "version": "1.0.0",
+  "author": "ihniwiad",
+  "main": "scripts.js",
+  "scripts": {
+    "build": "gulp build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bootstrap",
+    "javascript",
+    "css"
+  ],
   "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "babelify": "^10.0.0",
+    "browserify": "^17.0.0",
+    "dotenv": "^8.2.0",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^4.0.0",
     "gulp-clean": "^0.3.2",
@@ -15,6 +31,8 @@
     "gulp-string-replace": "^1.1.2",
     "gulp-uglify": "^3.0.2",
     "gulp-watch": "^4.3.11",
-    "readable-stream": "^3.6.0"
+    "readable-stream": "^3.6.0",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
   }
 }
