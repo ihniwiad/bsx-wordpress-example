@@ -577,9 +577,9 @@ var BSX_UTILS = ( function( $ ) {
 <!-- ALERT MODAL -->
 
 <!-- alert modal (empty) -->
-<div class="modal fade plenty-alert-modal" tabindex="-1" role="alert" data-tg="plenty-alert-modal">
+<div class="modal fade bsx-alert-modal" tabindex="-1" role="alert" data-tg="bsx-alert-modal">
 	<div class="modal-dialog" role="document">
-		<div class="modal-content" data-tg="plenty-alert-modal-content">
+		<div class="modal-content" data-tg="bsx-alert-modal-content">
 		</div>
 	</div>
 </div>
@@ -588,10 +588,10 @@ var BSX_UTILS = ( function( $ ) {
 
 	<!-- alert template to clone into alert modal -->
 
-	<div class="alert alert-danger alert-dismissible my-1" data-tg="plenty-error-alert">
-		<div class="font-weight-bold" data-g-tg="plenty-alert-title"></div>
-		<div class="d-inline">Code <span data-g-tg="plenty-alert-code">0</span>: </div>
-		<div class="d-inline" data-g-tg="plenty-alert-content"></div>
+	<div class="alert alert-danger alert-dismissible my-1" data-tg="bsx-error-alert">
+		<div class="font-weight-bold" data-g-tg="bsx-alert-title"></div>
+		<div class="d-inline">Code <span data-g-tg="bsx-alert-code">0</span>: </div>
+		<div class="d-inline" data-g-tg="bsx-alert-content"></div>
 		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 			<span aria-hidden="true">×</span>
 		</button>
@@ -599,10 +599,10 @@ var BSX_UTILS = ( function( $ ) {
 
 	<!-- message template to clone into alert modal -->
 
-	<div class="alert alert-success alert-dismissible my-1" data-tg="plenty-message-alert">
-		<div class="font-weight-bold" data-g-tg="plenty-alert-title"></div>
-		<div data-g-tg="plenty-alert-content"></div>
-		<span class="modal-countdown" data-g-tg="plenty-alert-countdown" style="display: none;"></span>
+	<div class="alert alert-success alert-dismissible my-1" data-tg="bsx-message-alert">
+		<div class="font-weight-bold" data-g-tg="bsx-alert-title"></div>
+		<div data-g-tg="bsx-alert-content"></div>
+		<span class="modal-countdown" data-g-tg="bsx-alert-countdown" style="display: none;"></span>
 		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 			<span aria-hidden="true">×</span>
 		</button>
@@ -625,10 +625,10 @@ var BSX_UTILS = ( function( $ ) {
 	Alert.adaptAlert = function( currentAlert, options ) {
 
 		var defaults = {
-			titleSelector: '[data-g-tg="plenty-alert-title"]',
-			contentSelector: '[data-g-tg="plenty-alert-content"]',
-			codeSelector: '[data-g-tg="plenty-alert-code"]',
-			countdownSelector: '[data-g-tg="plenty-alert-countdown"]',
+			titleSelector: '[data-g-tg="bsx-alert-title"]',
+			contentSelector: '[data-g-tg="bsx-alert-content"]',
+			codeSelector: '[data-g-tg="bsx-alert-code"]',
+			countdownSelector: '[data-g-tg="bsx-alert-countdown"]',
 			title: 'Unknown message',
 			content: 'Message information missing.'
 		};
@@ -821,11 +821,11 @@ var BSX_UTILS = ( function( $ ) {
 		Alert.options = $.extend( {}, defaults, options );
 		*/
 
-		Alert.$modal = Utils.$targetElems.filter( '[data-tg="plenty-alert-modal"]' );
-        Alert.$modalContent = Utils.$targetElems.filter( '[data-tg="plenty-alert-modal-content"]' );
+		Alert.$modal = Utils.$targetElems.filter( '[data-tg="bsx-alert-modal"]' );
+        Alert.$modalContent = Utils.$targetElems.filter( '[data-tg="bsx-alert-modal-content"]' );
 
-        Alert.$errorAlert = Utils.$targetElems.filter( '[data-tg="plenty-error-alert"]' );
-        Alert.$messageAlert = Utils.$targetElems.filter( '[data-tg="plenty-message-alert"]' );
+        Alert.$errorAlert = Utils.$targetElems.filter( '[data-tg="bsx-error-alert"]' );
+        Alert.$messageAlert = Utils.$targetElems.filter( '[data-tg="bsx-message-alert"]' );
 
 	}
 
@@ -833,7 +833,7 @@ var BSX_UTILS = ( function( $ ) {
 	Alert.init();
 
 	/*
-	$.fn.plentyAlert = function( options ) {
+	$.fn.bsxAlert = function( options ) {
 
         var defaults = {
         	defaultClass: 'alert alert-dismissible m-0',
@@ -850,9 +850,9 @@ var BSX_UTILS = ( function( $ ) {
         options = $.extend( {}, defaults, options );
 
         var $modal = $( this );
-        var $modalAlert = Utils.$targetElems.filter( '[data-tg="plenty-alert"]' );
-        var $modalAlertTitle = Utils.$targetElems.filter( '[data-tg="plenty-alert-title"]' );
-        var $modalAlertContent = Utils.$targetElems.filter( '[data-tg="plenty-alert-content"]' );
+        var $modalAlert = Utils.$targetElems.filter( '[data-tg="bsx-alert"]' );
+        var $modalAlertTitle = Utils.$targetElems.filter( '[data-tg="bsx-alert-title"]' );
+        var $modalAlertContent = Utils.$targetElems.filter( '[data-tg="bsx-alert-content"]' );
 
 		var title = ( typeof options.title === 'object' ) ? options.title[ Utils.lang ] : options.title;
 		var content = ( typeof options.content === 'object' ) ? options.content[ Utils.lang ] : options.content;
@@ -880,8 +880,8 @@ var BSX_UTILS = ( function( $ ) {
 		if ( options.autoclose && Number( parseFloat( options.autocloseDelay ) ) === options.autocloseDelay ) {
 			$modal.autoclose( {
 				autoclose: true,
-				$countdownElem: Utils.$targetElems.filter( '[data-tg="plenty-alert-countdown"]' ),
-				$pauseEventElem: Utils.$targetElems.filter( '[data-tg="plenty-alert"]' )
+				$countdownElem: Utils.$targetElems.filter( '[data-tg="bsx-alert-countdown"]' ),
+				$pauseEventElem: Utils.$targetElems.filter( '[data-tg="bsx-alert"]' )
 			} );
 		}
 	}
@@ -890,11 +890,11 @@ var BSX_UTILS = ( function( $ ) {
 	// init
 	// TEST – TODO: remove
 	/*
-	Utils.$functionElems.filter( '[data-fn="plenty-alert-modal-trigger"]' ).on( 'click', function() {
+	Utils.$functionElems.filter( '[data-fn="bsx-alert-modal-trigger"]' ).on( 'click', function() {
 
-		var $alertModal = Utils.$targetElems.filter( '[data-tg="plenty-message-modal"]' );
+		var $alertModal = Utils.$targetElems.filter( '[data-tg="bsx-message-modal"]' );
 
-		$alertModal.plentyAlert( {
+		$alertModal.bsxAlert( {
         	stateClass: 'alert-success',
         	autoclose: true,
         	autocloseDelay: 5000,
@@ -911,7 +911,7 @@ var BSX_UTILS = ( function( $ ) {
 	*/
 	/*
 	// TEST – TODO: remove
-	Utils.$functionElems.filter( '[data-fn="plenty-add-message-alert"]' ).on( 'click', function() {
+	Utils.$functionElems.filter( '[data-fn="bsx-add-message-alert"]' ).on( 'click', function() {
 		var options = {
 			title: 'Message',
 			content: 'Faucibus tincidunt.',
@@ -920,7 +920,7 @@ var BSX_UTILS = ( function( $ ) {
 		Alert.showMessage( options );
 	} );
 	// TEST – TODO: remove
-	Utils.$functionElems.filter( '[data-fn="plenty-add-error-alert"]' ).on( 'click', function() {
+	Utils.$functionElems.filter( '[data-fn="bsx-add-error-alert"]' ).on( 'click', function() {
 		var options = {
 			errorCode: 123,
 			title: 'Fehler',
@@ -1553,11 +1553,11 @@ TODO:
 } )( jQuery, BSX_UTILS );
 /*
 
-<button class="plenty-navbar-toggler" type="button" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" data-fn="toggle" data-fn-target="[data-tg='navbar-collapse']">
+<button class="bsx-navbar-toggler" type="button" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" data-fn="toggle" data-fn-target="[data-tg='navbar-collapse']">
     <i class="fa fa-navicon" aria-hidden="true"></i>
 </button>
 
-<div class="plenty-navbar-collapse" id="navbarNavDropdown" data-tg="navbar-collapse">
+<div class="bsx-navbar-collapse" id="navbarNavDropdown" data-tg="navbar-collapse">
     ...
 </div>
 
@@ -2361,11 +2361,11 @@ link into hash tab:
 } )( jQuery, BSX_UTILS );
 /*
 
-<button class="plenty-navbar-toggler" type="button" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" data-fn="toggle" data-fn-target="[data-tg='navbar-collapse']">
+<button type="button" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" data-fn="toggle" data-fn-target="[data-tg='navbar-collapse']">
     <i class="fa fa-navicon" aria-hidden="true"></i>
 </button>
 
-<div class="plenty-navbar-collapse" id="navbarNavDropdown" data-tg="navbar-collapse">
+<div id="navbarNavDropdown" data-tg="navbar-collapse">
     ...
 </div>
 
@@ -4165,6 +4165,14 @@ minimum structure (items don't have to be direct children of gallery and don't h
     ...
 </div>
 
+one-item-gallery (gallery is item):
+
+<figure data-fn="photoswipe">
+    <a href="large-img-001-720x720.jpg" itemprop="contentUrl" data-size="720x720">
+        <img src="large-img-001-720x720-thumb.jpg" alt="Image 1">
+    </a>
+</figure>
+
 
 better readable structure (rich snippets):
 
@@ -4256,21 +4264,31 @@ pswp template:
         var placeholderSrcString = 'base64';
         var itemNodeName = 'FIGURE';
 
-        function closestElem(el, selector) {
+        function elemIs( el, selector ) {
             var matchesFn;
             // find vendor prefix
-            ['matches','webkitMatchesSelector','mozMatchesSelector','msMatchesSelector','oMatchesSelector'].some(function(fn) {
-                if (typeof document.body[fn] == 'function') {
+            [ 'matches', 'webkitMatchesSelector', 'mozMatchesSelector', 'msMatchesSelector', 'oMatchesSelector' ].some( function( fn ) {
+                if ( typeof document.body[ fn ] == 'function' ) {
                     matchesFn = fn;
                     return true;
                 }
                 return false;
-            });
+            } );
+            if ( el[ matchesFn ]( selector ) ) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        function closestElem(el, selector) {
             var parent;
             // traverse parents
             while (el) {
                 parent = el.parentElement;
-                if (parent && parent[matchesFn](selector)) {
+                // if (parent && parent[matchesFn](selector)) {
+                if ( parent && elemIs( parent, selector ) ) {
                     return parent;
                 }
                 el = parent;
@@ -4281,8 +4299,12 @@ pswp template:
         // parse slide data (url, title, size ...) from DOM elements 
         // (children of gallerySelector)
         var parseThumbnailElements = function(el) {
-            // TODO: find figure elems instaed of child nodes
-            var thumbElements = el.getElementsByTagName( itemNodeName ),
+            // find itemNodeName (FIGURE) elems
+            var thumbElements = 
+                    elemIs( el, itemNodeName ) 
+                    ? [ el ]
+                    : el.getElementsByTagName( itemNodeName )
+                ,
                 numNodes = thumbElements.length,
                 items = [],
                 figureEl,
@@ -4351,9 +4373,13 @@ pswp template:
             var eTarget = e.target || e.srcElement;
 
             // find root element of slide
-            var clickedListItem = closest(eTarget, function(el) {
-                return ( el.tagName && el.tagName.toUpperCase() === itemNodeName );
-            });
+            var clickedListItem = 
+                elemIs( eTarget, itemNodeName )
+                ? eTarget
+                : closest( eTarget, function( el ) {
+                    return ( el.tagName && el.tagName.toUpperCase() === itemNodeName );
+                } )
+            ;
 
             if(!clickedListItem) {
                 return;
@@ -4362,10 +4388,20 @@ pswp template:
             // find index of clicked item by looping through all child nodes
             // alternatively, you may define index via data- attribute
 
-            // TODO: clickedGallery might be any container but gallery, find closest parent with gallerySelector
-            var clickedGallery = closestElem( clickedListItem, gallerySelector ),
-                // TODO: find all figure elems
-                childNodes = clickedGallery.getElementsByTagName( itemNodeName ),
+            // clickedGallery might be clickedListItem itself or any parent (find closest parent with gallerySelector then)
+            var itemIsGallery = elemIs( clickedListItem, gallerySelector );
+
+            var clickedGallery = 
+                    itemIsGallery 
+                    ? clickedListItem
+                    : closestElem( clickedListItem, gallerySelector )
+                ,
+                // find all itemNodeName (FIGURE) elems
+                childNodes = 
+                    itemIsGallery 
+                    ? [ clickedListItem ]
+                    : clickedGallery.getElementsByTagName( itemNodeName )
+                ,
                 numChildNodes = childNodes.length,
                 nodeIndex = 0,
                 index;
@@ -4476,15 +4512,6 @@ pswp template:
             // Pass data to PhotoSwipe and initialize it
             gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
             gallery.init();
-            
-            // plenty modification
-            /*
-            gallery.listen('beforeChange', function() {
-                if ( gallery.isDragging() ) {
-                }
-            });
-            */
-            // / plenty modification
         };
 
         // loop through all gallery elements and bind events
