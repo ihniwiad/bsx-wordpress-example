@@ -72,12 +72,12 @@
 			
 	*/
 ?>
-
-<header class="bsx-appnav-navbar bsx-appnav-fixed-top" data-fn="anchor-offset-elem" data-tg="sticky-container-below">
+<!-- bsx-appnav-navbar-scroll-toggle -->
+<header class="bsx-appnav-navbar bsx-appnav-fixed-top bsx-appnav-navbar-scroll-toggle" data-fn="anchor-offset-elem" data-tg="sticky-container-below">
 
 	<nav class="bsx-appnav-navbar-container">
 
-		<button class="bsx-appnav-navbar-toggler" id="toggle-navbar-collapse" type="button" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" data-fn="toggle" data-fn-target="[data-tg='navbar-collapse']" data-tg="dropdown-multilevel-excluded">
+		<button class="bsx-appnav-navbar-toggler" id="toggle-navbar-collapse" type="button" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" data-fn="toggle" data-fn-options="{ bodyOpenedClass: 'nav-open' }" data-fn-target="[data-tg='navbar-collapse']" data-tg="dropdown-multilevel-excluded">
 			<span class="sr-only">Menu</span>
 			<i class="fa fa-navicon" aria-hidden="true"></i>
 		</button>
@@ -163,7 +163,7 @@
 
 		<div class="bsx-appnav-collapse-backdrop" data-fn="remote-event" data-fn-target="#toggle-navbar-collapse" data-tg="dropdown-multilevel-excluded"></div>
 
-		<ul class="bsx-appnav-navbar-nav bsx-icon-navbar-nav bsx-allmedia-dropdown-nav mr-3">
+		<ul class="bsx-appnav-navbar-nav bsx-icon-navbar-nav bsx-allmedia-dropdown-nav">
 			<li class="">
 				<a id="iconnav-link-1" href="javascript:void( 0 );" data-fn="dropdown-multilevel" aria-haspopup="true" aria-expanded="false"><i class="fa fa-phone" aria-hidden="true"></i><span class="sr-only">Telefon</span></a>
 				<ul class="ul-right" aria-labelledby="iconnav-link-1">

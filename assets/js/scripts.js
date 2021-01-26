@@ -1566,7 +1566,7 @@ TODO:
 ( function( $, Utils ) {
 
     // toggle (e.g. main navigation container)
-    $.fn.toggle = function( options ) {
+    $.fn.toggle = function() {
 
         var defaults = {
             openedClass: Utils.classes.open,
@@ -1574,19 +1574,25 @@ TODO:
             animatingClass: Utils.classes.animating,
             triggerOpenedClass: Utils.classes.active,
             triggerClosedClass: '',
+            bodyOpenedClass: '',
+            bodyClosedClass: '',
             openCallback: function() {},
             closeCallback: function() {},
             openedCallback: function() {},
             closedCallback: function() {}
         };
 
-        options = $.extend( {}, defaults, options );
-
         var $elems = $( this );
 
         $elems.each( function() {
 
             var $elem = $( this );
+
+            // get options from attr
+            var options = $elem.getOptionsFromAttr();
+
+            options = $.extend( {}, defaults, options );
+
             var targetSelector = $elem.attr( Utils.attributes.target ) || '';
             var $target = ( Utils.$targetElems.filter( targetSelector ).lenght > 0 ) ? Utils.$targetElems.filter( targetSelector ) : $( targetSelector );
             var transitionDuration = $target.getTransitionDuration();
@@ -1606,6 +1612,12 @@ TODO:
                         .addClass( options.triggerOpenedClass )
                         .ariaExpanded( 'true' )
                     ;
+                    if ( options.bodyOpenedClass ) {
+                        Utils.$body.addClass( options.bodyOpenedClass );
+                    }
+                    if ( options.bodyClosedClass ) {
+                        Utils.$body.removeClass( options.bodyClosedClass );
+                    }
                     options.openCallback();
 
                     // set & remove 'options.animatingClass'
@@ -1622,6 +1634,12 @@ TODO:
                         .removeClass( options.triggerOpenedClass )
                         .ariaExpanded( 'false' )
                     ;
+                    if ( options.bodyOpenedClass ) {
+                        Utils.$body.removeClass( options.bodyOpenedClass );
+                    }
+                    if ( options.bodyClosedClass ) {
+                        Utils.$body.addClass( options.bodyClosedClass );
+                    }
                     options.closeCallback();
                     
                     // set & remove 'options.animatingClass'
@@ -3274,6 +3292,139 @@ link into hash tab:
 
 } )( jQuery, BSX_UTILS );
 
+
+
+( function( $, Utils ) {
+
+    var Scrolling = {
+        target: Utils.$body,
+        position: 0,
+        direction: ''
+    };
+
+    Scrolling.getPosition = function() {
+        return Utils.$document.scrollTop();
+    };
+
+    Scrolling.getDirection = function() {
+        var recentPosition = Scrolling.position;
+        var currentPosition = Scrolling.getPosition();
+        if ( recentPosition < currentPosition ) {
+            return 'down';
+        }
+        else if ( recentPosition > currentPosition ) {
+            return 'up';
+        }
+        else {
+            return '';
+        }
+    };
+
+    Scrolling.init = function() {
+
+        var defaults = {
+            scrollDownClassName: 'scroll-down',
+            scrollUpClassName: 'scroll-up',
+            scrollTopClassName: 'scroll-top',
+            scrollBottomClassName: 'scroll-bottom',
+            scrollNearTopClassName: 'scroll-near-top',
+            scrollAwayTopClassName: 'scroll-away-top',
+            nearTopThreshold: 100
+        };
+
+        var $elem = $( Scrolling.target );
+
+        var options = $elem.getOptionsFromAttr();
+
+        options = $.extend( {}, defaults, options );
+
+        // initial scroll position
+        Scrolling.position = Scrolling.getPosition();
+        
+        Utils.$window.on( 'scroll', function() {
+
+            var currentPosition = Scrolling.getPosition();
+            var currentDirection = Scrolling.getDirection();
+
+            // console.log( 'position: ' + currentPosition );
+            // console.log( 'scroll direction: ' + currentDirection );
+
+            // check & set up / down class names
+            if ( currentDirection && Scrolling.direction != currentDirection ) {
+                if ( currentDirection == 'down' ) {
+                    // scrolling down
+                    if ( ! $elem.is( '.' + options.scrollDownClassName ) ) {
+                        $elem.addClass( options.scrollDownClassName );
+                    }
+                    if ( $elem.is( '.' + options.scrollUpClassName ) ) {
+                        $elem.removeClass( options.scrollUpClassName );
+                    }
+                }
+                else {
+                    // scrolling up
+                    if ( ! $elem.is( '.' + options.scrollUpClassName ) ) {
+                        $elem.addClass( options.scrollUpClassName );
+                    }
+                    if ( $elem.is( '.' + options.scrollDownClassName ) ) {
+                        $elem.removeClass( options.scrollDownClassName );
+                    }
+                }
+            }
+
+            // check & set top class names
+            if ( currentPosition == 0 ) {
+                if ( ! $elem.is( '.' + options.scrollTopClassName ) ) {
+                    $elem.addClass( options.scrollTopClassName );
+                }
+            }
+            else {
+                if ( $elem.is( '.' + options.scrollTopClassName ) ) {
+                    $elem.removeClass( options.scrollTopClassName );
+                }
+            }
+
+            // check & set bottom class name
+            if ( currentPosition + Utils.$window.height() >= Scrolling.target.height() ) {
+                if ( ! $elem.is( '.' + options.scrollBottomClassName ) ) {
+                    $elem.addClass( options.scrollBottomClassName );
+                }
+            }
+            else {
+                if ( $elem.is( '.' + options.scrollBottomClassName ) ) {
+                    $elem.removeClass( options.scrollBottomClassName );
+                }
+            }
+
+            // check & set near away / class names
+            if ( currentPosition < options.nearTopThreshold ) {
+                if ( ! $elem.is( '.' + options.scrollNearTopClassName ) ) {
+                    $elem.addClass( options.scrollNearTopClassName );
+                }
+                if ( $elem.is( '.' + options.scrollAwayTopClassName ) ) {
+                    $elem.removeClass( options.scrollAwayTopClassName );
+                }
+            }
+            else {
+                if ( ! $elem.is( '.' + options.scrollAwayTopClassName ) ) {
+                    $elem.addClass( options.scrollAwayTopClassName );
+                }
+                if ( $elem.is( '.' + options.scrollNearTopClassName ) ) {
+                    $elem.removeClass( options.scrollNearTopClassName );
+                }
+            }
+
+            // remember
+            Scrolling.position = currentPosition;
+            Scrolling.direction = currentDirection;
+        } );
+    }
+
+    // init
+    Utils.$window.on( Utils.events.initJs, function() {
+        Scrolling.init();
+    } );
+
+} )( jQuery, BSX_UTILS );
 // submit (e.g. knowledge search results pages)
 
 /*
@@ -3309,61 +3460,6 @@ link into hash tab:
     Utils.$window.on( Utils.events.initJs, function() {
 
         Utils.$functionElems.filter( '[data-fn="submit-on-change"]' ).submitOnChange();
-
-    } );
-
-} )( jQuery, BSX_UTILS );
-/*
-<body>
-    <a class="sr-only sr-only-focusable" href="#main">Skip to main content</a>
-    <div class="wrapper" id="top">
-        ...
-        <div class="to-top-wrapper" data-fn="to-top-wrapper">
-            <a class="btn btn-secondary btn-only-icon" href="#top"><i class="fa fa-arrow-up" aria-hidden="true"></i><span class="sr-only">Scroll to top</span></a>
-        </div>
-    </div>
-</body>
-*/
-
-( function( $, Utils ) {
-
-    $.fn.toggleToTopButton = function( options ) {
-
-        var $elem = $( this );
-
-        var defaults = {
-            threshold: 100,
-            visibleClass: Utils.classes.open
-        };
-
-        options = $.extend( {}, defaults, options );
-    
-        function _positionToTopButton() {
-            if ( Utils.$document.scrollTop() > 100 ) {
-                if ( ! $elem.is( '.' + options.visibleClass ) ) {
-                    $elem.addClass( options.visibleClass );
-                }
-            }
-            else {
-                if ( $elem.is( '.' + options.visibleClass ) ) {
-                    $elem.removeClass( options.visibleClass );
-                }
-            }
-        }
-
-        // position
-        _positionToTopButton()
-        
-        Utils.$window.on( 'scroll resize', function() {
-            _positionToTopButton();
-        });
-    
-    }
-
-    // init
-    Utils.$window.on( Utils.events.initJs, function() {
-
-        Utils.$functionElems.filter( '[data-fn="to-top-wrapper"]' ).toggleToTopButton();
 
     } );
 
@@ -4389,9 +4485,8 @@ pswp template:
             // alternatively, you may define index via data- attribute
 
             // clickedGallery might be clickedListItem itself or any parent (find closest parent with gallerySelector then)
-            var itemIsGallery = elemIs( clickedListItem, gallerySelector );
-
-            var clickedGallery = 
+            var itemIsGallery = elemIs( clickedListItem, gallerySelector ),
+                clickedGallery = 
                     itemIsGallery 
                     ? clickedListItem
                     : closestElem( clickedListItem, gallerySelector )
