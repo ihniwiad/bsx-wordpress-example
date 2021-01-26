@@ -29,10 +29,6 @@ $scriptsJsFilePath = $rootRelatedAssetsPath . $scriptsJsFileName;
 $scriptsJsVersion = file_exists( $scriptsJsFilePath ) ? filemtime( $scriptsJsFilePath ) : 'null';
 
 
-// include classes file
-//include './classes/include-classes.php';
-
-
 // include classes
 if ( class_exists( 'BsxPhotoswipe001' ) ) {
 	$BsxPhotoswipe = new BsxPhotoswipe001;

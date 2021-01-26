@@ -1,7 +1,6 @@
 <?php 
 
 include 'variables.php';
-//include 'classes/include-classes.php';
 
 ?>
 
