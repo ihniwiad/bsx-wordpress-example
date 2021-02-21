@@ -12219,6 +12219,9 @@ a.pswp__share--download:hover {
 .bsx-floating-gallery-img-xl {
   height: calc(10.5vh + 12vw); }
 
+img[data-fn="lazyload"][src*="data:image/svg+xml;base64"] {
+  background: rgba(0, 0, 0, 0.05); }
+
 .text-shadow-dark {
   text-shadow: 0 0 0.1em rgba(0, 0, 0, 0.33); }
 
