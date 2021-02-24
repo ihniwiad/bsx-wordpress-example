@@ -547,14 +547,14 @@ var BSX_UTILS = ( function( $ ) {
 	}
 
 	// fix ios missing body click event (set event to all div elements which are children of body)
-	if ( isIos ) {
-		var bodyChildren = document.body.children;
-		for ( i = 0; i < bodyChildren.length; i++ ) {
-			if ( bodyChildren[ i ].tagName == 'DIV' ) {
-				bodyChildren[ i ].setAttribute( 'onclick', 'void(0);' );
-			}
-		}
-	}
+	// if ( isIos ) {
+	// 	var bodyChildren = document.body.children;
+	// 	for ( i = 0; i < bodyChildren.length; i++ ) {
+	// 		if ( bodyChildren[ i ].tagName == 'DIV' ) {
+	// 			bodyChildren[ i ].setAttribute( 'onclick', 'void(0);' );
+	// 		}
+	// 	}
+	// }
 
 
 	var AnalyzeBrowser = {
@@ -2020,6 +2020,7 @@ IE lte 11 handle overflow of -banner-inner within .banner-vh-{ ... }
 
 } )( jQuery, BSX_UTILS );
 /*
+<!-- if using remote trigger use aria-controls and aria-expanded together (trigger) with aria-labeledby (popup) -->
 <div class="fixed-banner fixed-banner-bottom fixed-banner-closable bg-warning text-black d-none" tabindex="-1" role="dialog" hidden data-fn="cookie-related-elem" data-fn-options="{ cookieName: 'privacyBannerHidden', cookieExpiresDays: 365, hiddenCookieValue: '1', hiddenClass: 'd-none' }">
 	<div class="container py-3">
 		<div class="mb-2">
@@ -2067,6 +2068,13 @@ IE lte 11 handle overflow of -banner-inner within .banner-vh-{ ... }
 
 			var $elem = $( this );
 
+      // set trigger aria-expanded
+      var id = $elem.attr( 'id' );
+      var $triggers = Utils.$functionElems.filter( '[aria-controls="' + id + '"]' );
+      if ( $triggers.length > 0 ) {
+          $triggers.ariaExpanded( true );
+      }
+
 			if ( options.focusOnOpen ) {
 				if ( CookieRelatedElem.$focussedElem === null ) {
 					CookieRelatedElem.$focussedElem = $( Utils.$document.activeElement );
@@ -2089,6 +2097,13 @@ IE lte 11 handle overflow of -banner-inner within .banner-vh-{ ... }
 		$.fn._hideElem = function() {
 
 			var $elem = $( this );
+
+      // set trigger aria-expanded
+      var id = $elem.attr( 'id' );
+      var $triggers = Utils.$functionElems.filter( '[aria-controls="' + id + '"]' );
+      if ( $triggers.length > 0 ) {
+          $triggers.ariaExpanded( false );
+      }
 			
 			if ( !! options.hiddenClass ) {
 				$elem.addClass( options.hiddenClass );
@@ -2399,12 +2414,12 @@ link into hash tab:
 /*
 
 <!-- button to show consent popup -->
-<button class="btn btn-primary" data-fn="data-processing-popup-trigger">Show consent banner</button>
+<button class="btn btn-primary" id="consent-popup-trigger" aria-controls="consent-popup" aria-expanded="false" data-fn="data-processing-popup-trigger">Show consent banner</button>
 
 
-<!-- consent popup -->		
-<div class="fixed-banner fixed-banner-bottom fixed-banner-closable bg-secondary d-none" tabindex="-1" role="dialog" hidden data-fn="cookie-related-elem" data-tg="data-processing-popup" data-fn-options="{ cookieName: 'dataProcessingConsentBannerHidden', cookieExpiresDays: 365, hiddenCookieValue: '1', hiddenClass: 'd-none', remoteOpenable: true }">
-			
+<!-- consent popup -->      
+<div class="fixed-banner fixed-banner-bottom fixed-banner-closable bg-secondary d-none" id="consent-popup" aria-labeledby="consent-popup-trigger" tabindex="-1" role="dialog" hidden data-fn="cookie-related-elem" data-tg="data-processing-popup" data-fn-options="{ cookieName: 'dataProcessingConsentBannerHidden', cookieExpiresDays: 365, hiddenCookieValue: '1', hiddenClass: 'd-none', remoteOpenable: true }">
+            
 	<div class="container py-3">
 		
 		<form data-fn="data-processing-form" data-fn-options="{ cookieName: 'dataProcessingConsent', cookieExpiresDays: 365, categoryInputSelector: '[data-g-tg=category-input]' }">
@@ -2768,6 +2783,8 @@ link into hash tab:
  * 
  */
 
+// TODO: resize and set src / srcset only if empty, do no resize if svg placeholder
+
 ( function( $, window, document, Utils ) {
     var $window = $(window);
     var $document = $(document);
@@ -2910,37 +2927,24 @@ link into hash tab:
 
                 var $img = $( this );
 
-                if ( 
-                    (
-                        $self.attr( 'src' ) == ''
-                        || $self.attr( 'src' ) == settings.placeholder 
-                    )
-                    && !! newImgWidth && !! newImgHeight 
-                ) {
+                // set or reset to intended size (always, no need to remove style, just overwrite immediately)
+                $img.css( { width: newImgWidth + 'px', height: newImgHeight + 'px' } );
+                //console.log( 'resizeUnloadImg – width / height SET (1) (' + $img.attr( 'data-src' ) + ')' );
 
-                    // set or reset to intended size (always, no need to remove style, just overwrite immediately)
-                    $img.css( { width: newImgWidth + 'px', height: newImgHeight + 'px' } );
-                    //console.log( 'resizeUnloadImg – width / height SET (1) (' + $img.attr( 'data-src' ) + ')' );
+                // check for css size limitation
+                var cssImgWidth = parseInt( $img.css( 'width' ) );
 
-                    // check for css size limitation
-                    var cssImgWidth = parseInt( $img.css( 'width' ) );
-
-                    // reduce size after set if nessesary
-                    if ( cssImgWidth != newImgWidth ) {
-                        var calcImgWidth = cssImgWidth;
-                        var calcImgHeight = newImgHeight / newImgWidth * cssImgWidth;
-                        // adapt
-                        $img.css( { width: calcImgWidth + 'px', height: calcImgHeight + 'px' } );
-                        //console.log( 'resizeUnloadImg – width / height SET (2) (' + $img.attr( 'data-src' ) + ')' );
-                    }
-
-                    // trigger scroll since other unload images might have been appeared during resizing current image
-                    $window.trigger( 'scroll' );
-
+                // reduce size after set if nessesary
+                if ( cssImgWidth != newImgWidth ) {
+                    var calcImgWidth = cssImgWidth;
+                    var calcImgHeight = newImgHeight / newImgWidth * cssImgWidth;
+                    // adapt
+                    $img.css( { width: calcImgWidth + 'px', height: calcImgHeight + 'px' } );
+                    //console.log( 'resizeUnloadImg – width / height SET (2) (' + $img.attr( 'data-src' ) + ')' );
                 }
-                else {
-                    //console.log( '----- called resize but img altrady loaded (or no sizes given) – data-src: ' + $self.attr( 'data-' + settings.data_attribute ) );
-                }
+
+                // trigger scroll since other unload images might have been appeared during resizing current image
+                $window.trigger( 'scroll' );
             }
 
             // get image sizes (from width / height or data-with / data-height)
@@ -3001,7 +3005,14 @@ link into hash tab:
 
                 //console.log( '--- initial sizes: ' + origImgWidth + ' x ' + origImgHeight );
 
-                if ( !! origImgWidth && !! origImgHeight ) {
+                if ( 
+                    (
+                        $self.attr( 'src' ) == ''
+                        || $self.attr( 'src' ) == settings.placeholder 
+                    )
+                    && !! origImgWidth && !! origImgHeight 
+                ) {
+                    // resize only if src is empty or png placeholder and width and height is given
 
                     // initial resize
                     $self.resizeUnloadImg( origImgWidth, origImgHeight );
@@ -4031,6 +4042,16 @@ EXAMPLE 2:
 */
 
 ( function( $, Utils ) {
+
+    // fix ios missing body click event (set event to all elements which are children of body)
+    if ( Utils.AnalyzeBrowser.isIos ) {
+        var bodyChildren = document.body.children;
+        for ( i = 0; i < bodyChildren.length; i++ ) {
+            // if ( bodyChildren[ i ].tagName == 'DIV' ) {
+                bodyChildren[ i ].setAttribute( 'onclick', 'void(0);' );
+            // }
+        }
+    }
 
     // dropdown multilevel (e.g. main navigation lists)
     $.fn.dropdownMultilevel = function( options ) {
