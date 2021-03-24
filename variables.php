@@ -53,3 +53,6 @@ if ( isset( $_GET[ 'dev' ] ) && $_GET[ 'dev' ] == '1' ) {
 	$isDevMode = true;
 }
 
+
+$phoneHrefRemovePatterns = array( '/ /i', '/\./i', '/\//i', '/-/i' );
+
